@@ -1,2 +1,6 @@
 flask
 flask-cors
+psycopg2-binary
+flask-sqlalchemy
+Flask-Migrate
+flask-script
