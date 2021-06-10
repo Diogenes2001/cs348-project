@@ -13,6 +13,91 @@ migrate = Migrate(app, db)
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
+# FORMAT:
+# Array of arrays where each nested array has 3 or less pokemon
+# Each nested array represents a row in the front-end
+POKEMON = [
+    [{
+        'id': 1,
+        'name': 'Bulbasaur',
+        'types': ('Grass', 'Poison'),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    },
+    {
+        'id': 2,
+        'name': 'Ivysaur',
+        'types': ('Grass', 'Poison'),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    },
+    {
+        'id': 3,
+        'name': 'Venusaur',
+        'types': ('Grass', 'Poison'),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    }],
+    [{
+        'id': 4,
+        'name': 'Charmander',
+        'types': ('Fire',),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    },
+    {
+        'id': 5,
+        'name': 'Charmeleon',
+        'types': ('Fire',),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    },
+    {
+        'id': 6,
+        'name': 'Charizard',
+        'types': ('Fire',),
+        'hp': 1,
+        'spd': 1,
+        'atk': 1,
+        'def': 2,
+        'spAtk': 2,
+        'spDef': 2,
+    }],
+]
+
+@app.route('/pokedex', methods=['GET'])
+def all_pokemon():
+    # TO-DO: Get from database and transform to proper format for front-end
+    return jsonify({
+        'status': 'success',
+        'pokemon': POKEMON
+    })
+
+# sanity check route
+@app.route('/ping', methods=['GET'])
+def ping_pong():
+    return jsonify('pong!')
+
 @app.route("/test")
 def test():
     new_user = InfoModel(name='Cinna', age='1')
