@@ -8,7 +8,7 @@
   <b-col v-for="(type, index) in types" :key="index" md="auto">
 
   <!-- TO-DO: Dynamically change color of background depending on type? -->
-  <b-badge pill :pressed="true" variant="light">
+  <b-badge pill :pressed="true" variant="dark" v-bind:style="{ 'background-color' : colors[index] }">
   {{ type }}
   </b-badge>
   </b-col>
@@ -63,6 +63,7 @@ export default {
     id: Number,
     pokemon: String,
     types: Array,
+    colors: Array,
     hp: Number,
     spd: Number,
     atk: Number,

@@ -44,7 +44,7 @@
       <b-col v-for="(mon, index) in row" :key="index">
       <profile
         v-bind:id="mon.id" v-bind:pokemon="mon.name"
-        v-bind:types="mon.types"
+        v-bind:types="mon.types" v-bind:colors="mon.colors"
         v-bind:hp="mon.hp" v-bind:spd="mon.spd"
         v-bind:atk="mon.atk" v-bind:def="mon.def"
         v-bind:spAtk="mon.spAtk" v-bind:spDef="mon.spDef"
