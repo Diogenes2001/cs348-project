@@ -15,7 +15,11 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 # FORMAT:
 # Array of arrays where each nested array has 3 or less pokemon
+# e.g. POKEMON = [[Pokemon1, Pokemon2, Pokemon3],
+#                 [Pokemon4, Pokemon5, Pokemon6],
+#                 [Pokemon7, Pokemon8, Pokemon9]]
 # Each nested array represents a row in the front-end
+# Done this way so logic is easier for front-end
 POKEMON = [
     [{
         'id': 1,
@@ -85,12 +89,17 @@ POKEMON = [
     }],
 ]
 
-@app.route('/pokedex', methods=['GET'])
+@app.route('/pokedex', methods=['POST'])
 def all_pokemon():
+    data = request.get_json()
+    name = data['name']    # Name of pokemon user would like to filter for (empty means ALL)
+    types = data['types']  # List of types user would like to filter for (empty means ALL)
+
     # TO-DO: Get from database and transform to proper format for front-end
+
     return jsonify({
         'status': 'success',
-        'pokemon': POKEMON
+        'pokemon': POKEMON,
     })
 
 # sanity check route
