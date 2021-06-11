@@ -38,7 +38,7 @@
   <br>
   <div>
   <b-container class="bv-example-row">
-    <h1>Pokemon</h1>
+    <h1>Pok&eacute;dex</h1>
     <hr><br>
     <b-row v-for="(row, index) in pokemon" :key="index">
       <b-col v-for="(mon, index) in row" :key="index">
