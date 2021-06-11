@@ -158,7 +158,7 @@ def get_evolutions():
 
     return jsonify({
         'status': 'success',
-        'pokemon': POKEMON,
+        'pokemon': [POKEMON[0],],
     })
 
 # sanity check route

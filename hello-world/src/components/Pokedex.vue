@@ -16,6 +16,16 @@
                           placeholder="Enter Pokemon Name">
             </b-form-input>
           </b-form-group>
+          <b-form-checkbox
+            id="checkbox-1"
+            v-model="evolutions"
+            name="checkbox-1"
+            value=true
+            unchecked-value=false
+          >
+            Show Evolutions
+          </b-form-checkbox>
+          <br>
           <b-form-group label="Type:">
             <b-form-checkbox-group
               id="checkbox-group-1"
@@ -26,8 +36,8 @@
           </b-form-group>
           <b-container class="bv-example-row">
             <b-row align-h="end">
-              <b-col md="auto"><b-button type="submit" pill variant="success">Ok</b-button></b-col>
               <b-col md="auto"><b-button type="reset" pill variant="danger">Reset</b-button></b-col>
+              <b-col md="auto"><b-button type="submit" pill variant="success">Submit</b-button></b-col>
             </b-row>
           </b-container>
         </b-form>
@@ -74,7 +84,7 @@ export default {
         pokemon: [],
         name: '',
         types: [],
-        message: '',
+        evolutions: false,
         options: [
           { text: 'Normal', value: 'normal' },
           { text: 'Fire', value: 'fire' },
@@ -99,11 +109,14 @@ export default {
     },
     methods: {
       getPokemon(params) {
-        const path = 'http://localhost:5000/pokedex'
+        var path = 'http://localhost:5000/pokedex'
+        if (this.name && this.evolutions == "true") {
+          path = 'http://localhost:5000/evolutions'
+        }
+        console.log(path);
         axios.post(path, params)
           .then((res) => {
             this.pokemon = res.data.pokemon;
-            this.message = res.data.message;
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -113,6 +126,7 @@ export default {
       initForm() {
         this.name = '';
         this.types = [];
+        this.evolutions = false;
       },
       onSubmit(evt) {
         evt.preventDefault();
