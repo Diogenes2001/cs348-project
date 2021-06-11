@@ -1,5 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
       <b-navbar-brand href="/">
       <img class="image" src="../assets/logo.png" alt="logo" width="3%" height="3%">
       PokeDB (name subject to change)
