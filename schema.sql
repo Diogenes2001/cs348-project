@@ -12,7 +12,7 @@ CREATE TABLE "Type"(
 CREATE TABLE Effectiveness(
     moveType VARCHAR(16) NOT NULL REFERENCES "Type"(typeName),
     pokemonType VARCHAR(16) NOT NULL REFERENCES "Type"(typeName),
-    effectiveness DECIMAL(1,1) NOT NULL CHECK(effectiveness IN (0, 0.5, 1, 2)),
+    effectiveness DECIMAL(2,1) NOT NULL CHECK(effectiveness IN (0, 0.5, 1, 2)),
     PRIMARY KEY(moveType, pokemonType)
 );
 
@@ -104,6 +104,8 @@ CREATE TABLE OwnedPokemon(
     FOREIGN KEY(species, move2) REFERENCES CanLearnMove(pid, moveName),
     FOREIGN KEY(species, move3) REFERENCES CanLearnMove(pid, moveName),
     FOREIGN KEY(species, move4) REFERENCES CanLearnMove(pid, moveName)
+    CHECK(move1 <> move2 AND move1 <> move3 AND move1 <> move4
+        AND move2 <> move3 AND move2 <> move4 AND move3 <> move4)
 );
 
 CREATE OR REPLACE FUNCTION check_ability() RETURNS TRIGGER AS $$
@@ -125,41 +127,41 @@ EXECUTE PROCEDURE check_ability();
 
 CREATE OR REPLACE FUNCTION fill_stats() RETURNS TRIGGER AS $$
 DECLARE
-    baseHp INTEGER;
-    baseAtk INTEGER;
-    baseDef INTEGER;
-    baseSpAtk INTEGER;
-    baseSpDef INTEGER;
-    baseSpd INTEGER;
+    bHp INTEGER;
+    bAtk INTEGER;
+    bDef INTEGER;
+    bSpAtk INTEGER;
+    bSpDef INTEGER;
+    bSpd INTEGER;
 BEGIN
 
     SELECT baseHp, baseAtk, baseDef, baseSpAtk, baseSpDef, baseSpd
-    INTO baseHp, baseAtk, baseDef, baseSpAtk, baseSpDef, baseSpd
+    INTO bHp, bAtk, bDef, bSpAtk, bSpDef, bSpd
         FROM Pokemon
-        WHERE id = NEW.id;
+        WHERE id = NEW.species;
 
     IF NEW.hp IS NULL THEN
-        NEW.hp = baseHp;
+        NEW.hp = bHp;
     END IF;
 
     IF NEW.atk IS NULL THEN
-        NEW.atk = baseAtk;
+        NEW.atk = bAtk;
     END IF;
 
     IF NEW.def IS NULL THEN
-        NEW.def = baseDef;
+        NEW.def = bDef;
     END IF;
 
     IF NEW.spAtk IS NULL THEN
-        NEW.spAtk = baseSpAtk;
+        NEW.spAtk = bSpAtk;
     END IF;
 
     IF NEW.spDef IS NULL THEN
-        NEW.spDef = baseSpDef;
+        NEW.spDef = bSpDef;
     END IF;
 
     IF NEW.spd IS NULL THEN
-        NEW.spd = baseSpd;
+        NEW.spd = bSpd;
     END IF;
 
     RETURN NEW;
