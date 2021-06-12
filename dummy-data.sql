@@ -26,15 +26,15 @@ INSERT INTO Effectiveness VALUES ('Normal', 'Ghost', 0);
 INSERT INTO Effectiveness VALUES ('Rock', 'Fighting', 0.5);
 INSERT INTO Effectiveness VALUES ('Fighting', 'Normal', 2);
 
-INSERT INTO Pokemon VALUES (1, 'Bulbasaur', 45, 45, 49, 49, 65, 65, 'Grass', 'Poison', 'Overgrow', 'Chlorophyll', NULL, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (2, 'Ivysaur', 60, 60, 62, 63, 80, 80, 'Grass', 'Poison', 'Overgrow', 'Chlorophyll', 1, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (3, 'Venusaur', 80, 80, 100, 123, 122, 120, 'Grass', 'Poison', 'Overgrow', 'Chlorophyll', 2, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (4, 'Charmander', 39, 65, 52, 43, 60, 50, 'Fire', NULL, 'Blaze', 'Solar Power', NULL, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (5, 'Charmeleon', 58, 80, 64, 58, 80, 65, 'Fire', NULL, 'Blaze', 'Solar Power', 4, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (6, 'Charizard', 78, 100, 104, 78, 159, 115, 'Fire', 'Flying', 'Blaze', 'Solar Power', 5, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (7, 'Squirtle', 44, 43, 48, 65, 50, 64, 'Water', NULL, 'Torrent', 'Rain Dish', NULL, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (8, 'Wartortle', 59, 58, 63, 80, 65, 80, 'Water', NULL, 'Torrent', 'Rain Dish', NULL, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (9, 'Blastoise', 79, 78, 103, 120, 135, 115, 'Water', NULL, 'Torrent', 'Rain Dish', NULL, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (1, 'Bulbasaur', 45, 45, 49, 49, 65, 65, 'Grass', 'Poison', 'Overgrow', NULL, NULL, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (2, 'Ivysaur', 60, 60, 62, 63, 80, 80, 'Grass', 'Poison', 'Overgrow', NULL, 1, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (3, 'Venusaur', 80, 80, 100, 123, 122, 120, 'Grass', 'Poison', 'Overgrow', NULL, 2, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (4, 'Charmander', 39, 65, 52, 43, 60, 50, 'Fire', NULL, 'Blaze', NULL, NULL, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (5, 'Charmeleon', 58, 80, 64, 58, 80, 65, 'Fire', NULL, 'Blaze', NULL, 4, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (6, 'Charizard', 78, 100, 104, 78, 159, 115, 'Fire', 'Flying', 'Blaze', NULL, 5, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (7, 'Squirtle', 44, 43, 48, 65, 50, 64, 'Water', NULL, 'Torrent', NULL, NULL, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (8, 'Wartortle', 59, 58, 63, 80, 65, 80, 'Water', NULL, 'Torrent', NULL, 7, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (9, 'Blastoise', 79, 78, 103, 120, 135, 115, 'Water', NULL, 'Torrent', NULL, 8, FALSE, FALSE);
 
 -- Note: couldn't find dataset for this, making up some for now
 INSERT INTO PokemonPairings VALUES (3, 6, 0.1);

@@ -5,8 +5,7 @@
 );
 
 CREATE TABLE "Type"(
-    typeName VARCHAR(16) NOT NULL PRIMARY KEY,
-    "image" BYTEA
+    typeName VARCHAR(16) NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE Effectiveness(
@@ -31,8 +30,7 @@ CREATE TABLE Pokemon(
     ability2 VARCHAR(30),
     evolvesFromId INTEGER REFERENCES Pokemon(id),
     isLegendary BOOLEAN NOT NULL,
-    isMythical BOOLEAN NOT NULL,
-    "image" BYTEA
+    isMythical BOOLEAN NOT NULL
 );
 
 CREATE TABLE PokemonPairings(
@@ -66,7 +64,6 @@ CREATE TABLE Move(
         CHECK(power % 5 = 0 AND power >= 0 AND power <= 250),
     damageType VARCHAR(10) NOT NULL 
         CHECK(damageType IN ('physical', 'special')),
-    damage INTEGER CHECK(damage >= 0),
     accuracy INTEGER 
         CHECK(accuracy % 5 = 0 AND accuracy >= 0 AND accuracy <= 100)
 );
