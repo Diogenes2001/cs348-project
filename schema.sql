@@ -1,4 +1,4 @@
-CREATE TABLE "User"(
+﻿CREATE TABLE "User"(
     username VARCHAR(30) NOT NULL PRIMARY KEY,
     email VARCHAR(50) NOT NULL,
     "password" VARCHAR(20) NOT NULL
@@ -103,7 +103,7 @@ CREATE TABLE OwnedPokemon(
     FOREIGN KEY(species, move1) REFERENCES CanLearnMove(pid, moveName),
     FOREIGN KEY(species, move2) REFERENCES CanLearnMove(pid, moveName),
     FOREIGN KEY(species, move3) REFERENCES CanLearnMove(pid, moveName),
-    FOREIGN KEY(species, move4) REFERENCES CanLearnMove(pid, moveName)
+    FOREIGN KEY(species, move4) REFERENCES CanLearnMove(pid, moveName),
     CHECK(move1 <> move2 AND move1 <> move3 AND move1 <> move4
         AND move2 <> move3 AND move2 <> move4 AND move3 <> move4)
 );
@@ -114,7 +114,7 @@ BEGIN
         (SELECT * FROM OwnedPokemon, Pokemon
         WHERE species = id AND ability <> ability1 AND ability <> ability2
         )) THEN
-        RETURN NULL;
+        RAISE EXCEPTION 'User supplied an invalid ability';
     ELSE
         RETURN NEW;
     END IF;
