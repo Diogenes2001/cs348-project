@@ -35,6 +35,10 @@ INSERT INTO Pokemon VALUES (6, 'Charizard', 78, 100, 104, 78, 159, 115, 'Fire', 
 INSERT INTO Pokemon VALUES (7, 'Squirtle', 44, 43, 48, 65, 50, 64, 'Water', NULL, 'Torrent', NULL, NULL, FALSE, FALSE);
 INSERT INTO Pokemon VALUES (8, 'Wartortle', 59, 58, 63, 80, 65, 80, 'Water', NULL, 'Torrent', NULL, 7, FALSE, FALSE);
 INSERT INTO Pokemon VALUES (9, 'Blastoise', 79, 78, 103, 120, 135, 115, 'Water', NULL, 'Torrent', NULL, 8, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (280, 'Ralts', 28, 40, 25, 25, 45, 35, 'Psychic', 'Fairy', 'Synchronize', 'Trace', NULL, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (281, 'Kirlia', 38, 50, 35, 35, 65, 55, 'Psychic', 'Fairy', 'Synchronize', 'Trace', 280, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (282, 'Gardevoir', 68, 80, 65, 65, 125, 115, 'Psychic', 'Fairy', 'Synchronize', 'Trace', 281, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (475, 'Gallade', 68, 80, 125, 65, 65, 115, 'Psychic', 'Fighting', 'Steadfast', NULL, 281, FALSE, FALSE);
 
 -- Note: couldn't find dataset for this, making up some for now
 INSERT INTO PokemonPairings VALUES (3, 6, 0.1);
@@ -50,14 +54,22 @@ INSERT INTO Move VALUES ('Pound', 'Normal', 35, 40, 'physical', 100);
 INSERT INTO Move VALUES ('Razor Leaf', 'Grass', 25, 55, 'physical', 95);
 INSERT INTO Move VALUES ('Solar Beam', 'Grass', 10, 120, 'special', 100);
 INSERT INTO Move VALUES ('Bubble', 'Water', 30, 40, 'special', 100);
+INSERT INTO Move VALUES ('Hydro Pump', 'Water', 5, 110, 'special', 80);
 INSERT INTO Move VALUES ('Ember', 'Fire', 25, 40, 'special', 100);
+INSERT INTO Move VALUES ('Fire Blast', 'Fire', 5, 110, 'special', 85);
 
 INSERT INTO CanLearnMove VALUES (1, 'Razor Leaf');
 INSERT INTO CanLearnMove VALUES (2, 'Razor Leaf');
 INSERT INTO CanLearnMove VALUES (3, 'Razor Leaf');
 INSERT INTO CanLearnMove VALUES (3, 'Solar Beam');
 INSERT INTO CanLearnMove VALUES (4, 'Ember');
+INSERT INTO CanLearnMove VALUES (6, 'Ember');
+INSERT INTO CanLearnMove VALUES (6, 'Solar Beam');
+INSERT INTO CanLearnMove VALUES (6, 'Fire Blast');
 INSERT INTO CanLearnMove VALUES (7, 'Bubble');
+INSERT INTO CanLearnMove VALUES (8, 'Bubble');
+INSERT INTO CanLearnMove VALUES (9, 'Bubble');
+INSERT INTO CanLearnMove VALUES (9, 'Hydro Pump');
 
 INSERT INTO OwnedPokemon VALUES (DEFAULT, 1, 'user1', 'Bulby', 2, 'male', FALSE, 10, 10, 10, 10, 10, 10, 'Overgrow', 'Razor Leaf', NULL, NULL, NULL);
 INSERT INTO OwnedPokemon VALUES (DEFAULT, 4, 'user2', 'Char', 2, 'female', FALSE, 11, 11, 11, 11, 11, 11, 'Blaze', 'Ember', NULL, NULL, NULL);

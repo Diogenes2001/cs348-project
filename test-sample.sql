@@ -1,11 +1,40 @@
 -- FEATURE 1
 
-
+SELECT name FROM (
+	(
+		Pokemon
+		JOIN
+		CanLearnMove
+		ON id=pid
+	)
+	JOIN 
+	Move
+	ON Move.moveName = CanLearnMove.moveName
+)
+WHERE
+power >= 90 AND moveType = 'Grass';
 
 ----------------------------------------------------
 -- FEATURE 2
 
-
+WITH RECURSIVE
+Evolution(evolvesFrom, evolvesInto) AS (
+	(
+		SELECT evolvesFromId, id FROM Pokemon
+	)
+	UNION
+	(
+		SELECT e1.evolvesFrom, id
+		FROM Evolution e1, Pokemon p
+		WHERE e1.evolvesInto = p.evolvesFromId
+	)
+)
+SELECT * FROM Pokemon
+WHERE id IN (
+	SELECT evolvesInto
+	FROM Evolution
+	WHERE evolvesFrom = (SELECT id FROM Pokemon WHERE name='Ralts')
+);
 
 ----------------------------------------------------
 -- FEATURE 3
