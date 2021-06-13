@@ -1,9 +1,22 @@
 Feature 1:
 
- id |   name   | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
-----+----------+--------+---------+---------+---------+-----------+-----------+-------+--------
-  3 | Venusaur |     80 |      80 |     100 |     123 |       122 |       120 | Grass | Poison
-  2 | Ivysaur  |     60 |      60 |      62 |      63 |        80 |        80 | Grass | Poison
+Example without move search:
+
+ id |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
+----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
+  4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
+  5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
+  6 | Charizard  |     78 |     100 |     104 |      78 |       159 |       115 | Fire  | Flying
+(3 rows)
+
+Example with move search:
+
+ id |   name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2  |       string_agg
+----+-----------+--------+---------+---------+---------+-----------+-----------+-------+--------+------------------------
+  1 | Bulbasaur |     45 |      45 |      49 |      49 |        65 |        65 | Grass | Poison | Razor Leaf
+  2 | Ivysaur   |     60 |      60 |      62 |      63 |        80 |        80 | Grass | Poison | Razor Leaf, Solar Beam
+  3 | Venusaur  |     80 |      80 |     100 |     123 |       122 |       120 | Grass | Poison | Razor Leaf, Solar Beam
+(3 rows)
 
 
 Feature 2:
@@ -13,6 +26,8 @@ Feature 2:
  281 | Kirlia    |     38 |      50 |      35 |      35 |        65 |        55 | Psychic | Fairy    | Synchronize | Trace    |           280 | f           | f
  282 | Gardevoir |     68 |      80 |      65 |      65 |       125 |       115 | Psychic | Fairy    | Synchronize | Trace    |           281 | f           | f
  475 | Gallade   |     68 |      80 |     125 |      65 |        65 |       115 | Psychic | Fighting | Steadfast   |          |           281 | f           | f
+(3 rows)
+
 
 Feature 3:
 

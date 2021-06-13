@@ -1,6 +1,15 @@
 -- FEATURE 1
 
-SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, Move.moveName FROM (
+-- Example without move querying
+
+SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+FROM Pokemon
+WHERE name LIKE '%Char%' AND baseHp >= 30 
+AND (ability1 LIKE '%Blaze%' OR ability2 LIKE '%Blaze%');
+
+-- Example with move querying
+
+SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, STRING_AGG(Move.moveName, ', ' ORDER BY Move.moveName) FROM (
 	(
 		Pokemon
 		JOIN
@@ -12,7 +21,8 @@ SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1,
 	ON Move.moveName = CanLearnMove.moveName
 )
 WHERE
-(type1 = 'Grass' OR type2 = 'Grass') AND (power >= 90 AND moveType = 'Grass');
+(type1 = 'Grass' OR type2 = 'Grass') AND accuracy >= 90 AND moveType = 'Grass'
+GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2;
 
 ----------------------------------------------------
 -- FEATURE 2
