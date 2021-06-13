@@ -12,13 +12,13 @@
                       label-for="form-name-input">
             <b-form-input id="form-name-input"
                           type="text"
-                          v-model="name"
+                          v-model="pokemonInfo.name"
                           placeholder="Enter Pokemon Name">
             </b-form-input>
           </b-form-group>
           <b-form-checkbox
             id="checkbox-1"
-            v-model="evolutions"
+            v-model="pokemonInfo.evolutions"
             name="checkbox-1"
             value=true
             unchecked-value=false
@@ -26,14 +26,53 @@
             Show Evolutions
           </b-form-checkbox>
           <br>
+          <b-form-row>
+            <b-col><label class="mr-1">ID:</label><b-form-input type="number" v-model="pokemonInfo.id" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">HP:</label><b-form-input type="number" v-model="pokemonInfo.hp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Spd:</label><b-form-input type="number" v-model="pokemonInfo.spd" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Atk:</label><b-form-input type="number" v-model="pokemonInfo.atk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Def:</label><b-form-input type="number" v-model="pokemonInfo.def" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">SpAtk:</label><b-form-input type="number" v-model="pokemonInfo.spAtk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">SpDef:</label><b-form-input type="number" v-model="pokemonInfo.spDef" placeholder="Enter #" /></b-col>
+          </b-form-row>
+          <br>
           <b-form-group label="Type:">
             <b-form-checkbox-group
               id="checkbox-group-1"
-              v-model="types"
+              v-model="pokemonInfo.types"
               :options="options"
               name="types"
             ></b-form-checkbox-group>
           </b-form-group>
+          <b-form-group id="form-move-group"
+                        label="Move Name:"
+                        label-for="form-move-input">
+              <b-form-input id="form-move-input"
+                            type="text"
+                            v-model="moveInfo.name"
+                            placeholder="Enter Move Name">
+              </b-form-input>
+            </b-form-group>
+          <b-form-row>
+            <b-col><label class="mr-1">PP:</label><b-form-input type="number" v-model="moveInfo.pp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Power:</label><b-form-input type="number" v-model="moveInfo.power" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Accuracy:</label><b-form-input type="number" v-model="moveInfo.accuracy" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Damage Type:</label><b-form-input v-model="moveInfo.damageType" placeholder="Select Type" list="damage-type-list"></b-form-input>
+              <datalist id="damage-type-list">
+                <option v-for="(type, index) in damageTypes" :key="index">{{ type }}</option>
+              </datalist>
+            </b-col>
+          </b-form-row>
+          <br>
+          <b-form-group label="Move Type:">
+              <b-form-checkbox-group
+                id="checkbox-group-2"
+                v-model="moveInfo.types"
+                :options="options"
+                name="moveTypes"
+              ></b-form-checkbox-group>
+            </b-form-group>
+          <br>
           <b-container class="bv-example-row">
             <b-row align-h="end">
               <b-col md="auto"><b-button type="reset" pill variant="danger">Reset</b-button></b-col>
@@ -82,9 +121,26 @@ export default {
     data() {
       return {
         pokemon: [],
-        name: '',
-        types: [],
-        evolutions: false,
+        pokemonInfo: {
+            name: '',
+            id: '',
+            hp: '',
+            spd: '',
+            atk: '',
+            def: '',
+            spAtk: '',
+            spDef: '',
+            types: [],
+            evolutions: false
+        },
+        moveInfo: {
+            name: '',
+            type: '',
+            pp: '',
+            power: '',
+            damageType: '',
+            accuracy: '',
+        },
         options: [
           { text: 'Normal', value: 'normal' },
           { text: 'Fire', value: 'fire' },
@@ -104,7 +160,8 @@ export default {
           { text: 'Dragon', value: 'dragon' },
           { text: 'Steel', value: 'steel' },
           { text: 'Fairy', value: 'fairy' },
-        ]
+        ],
+        damageTypes: ['Physical', 'Special'],
       };
     },
     methods: {
@@ -117,6 +174,7 @@ export default {
         axios.post(path, params)
           .then((res) => {
             this.pokemon = res.data.pokemon;
+            console.log(res.data.message);
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -124,33 +182,45 @@ export default {
           });
       },
       initForm() {
-        this.name = '';
-        this.types = [];
-        this.evolutions = false;
+        this.pokemonInfo.name = '';
+        this.pokemonInfo.types = [];
+        this.pokemonInfo.id = '';
+        this.pokemonInfo.hp = '';
+        this.pokemonInfo.spd = '';
+        this.pokemonInfo.atk = '';
+        this.pokemonInfo.def = '';
+        this.pokemonInfo.spAtk = '';
+        this.pokemonInfo.spDef = '';
+        this.pokemonInfo.evolutions = false;
+
+        this.moveInfo.name = '';
+        this.moveInfo.types = [];
+        this.moveInfo.PP = '';
+        this.moveInfo.power = '';
+        this.moveInfo.damageType = '';
+        this.moveInfo.accuracy = '';
+      },
+      getParams() {
+        const params = {
+          pokemonInfo: this.pokemonInfo,
+          moveInfo: this.moveInfo
+        };
+        return params;
       },
       onSubmit(evt) {
         evt.preventDefault();
-        const params = {
-          name: this.name,
-          types: this.types
-        };
+        const params = this.getParams();
         this.getPokemon(params);
       },
       onReset(evt) {
         evt.preventDefault();
         this.initForm();
-        const params = {
-          name: this.name,
-          types: this.types
-        };
+        const params = this.getParams();
         this.getPokemon(params);
       },
     },
     created() {
-      const params = {
-        name: this.name,
-        types: this.types
-      };
+      const params = this.getParams();
       this.getPokemon(params);
     },
   };

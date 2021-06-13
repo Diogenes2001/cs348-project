@@ -138,8 +138,30 @@ POKEMON = [
 @app.route('/pokedex', methods=['POST'])
 def all_pokemon():
     data = request.get_json()
-    name = data['name']    # Name of pokemon user would like to filter for (empty means ALL)
-    types = data['types']  # List of types user would like to filter for (empty means ALL)
+
+    # POKEMON INFO
+    name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
+    types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
+    # Note: the following have data type of String
+    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    id = data['pokemonInfo']['id']
+    hp = data['pokemonInfo']['hp']
+    spd = data['pokemonInfo']['spd']
+    atk = data['pokemonInfo']['atk']
+    defense = data['pokemonInfo']['def']
+    spAtk = data['pokemonInfo']['spAtk']
+    spDef = data['pokemonInfo']['spDef']
+
+    # MOVE INFO
+    moveName = data['moveInfo']['name']   # Name of learnable move user would like to filter for (empty means ALL)
+    moveTypes = data['moveInfo']['types']
+    # One of: Physical, Special
+    moveDmgType = data['moveInfo']['damageType']
+    # Note: the following have data type of String
+    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    movePP = data['moveInfo']['pp']
+    movePower = data['moveInfo']['power']
+    moveAcc = data['moveInfo']['accuracy']
 
     # TO-DO: Get from database and transform to proper format for front-end
     cur.execute('''SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, Move.moveName 
@@ -171,8 +193,30 @@ def all_pokemon():
 @app.route('/evolutions', methods=['POST'])
 def get_evolutions():
     data = request.get_json()
-    name = data['name']    # Name of pokemon user would like to filter for (empty means ALL)
-    types = data['types']  # List of types user would like to filter for (empty means ALL)
+
+    # POKEMON INFO
+    name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
+    types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
+    # Note: the following have data type of String
+    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    id = data['pokemonInfo']['id']
+    hp = data['pokemonInfo']['hp']
+    spd = data['pokemonInfo']['spd']
+    atk = data['pokemonInfo']['atk']
+    defense = data['pokemonInfo']['def']
+    spAtk = data['pokemonInfo']['spAtk']
+    spDef = data['pokemonInfo']['spDef']
+
+    # MOVE INFO
+    moveName = data['moveInfo']['name']   # Name of learnable move user would like to filter for (empty means ALL)
+    moveTypes = data['moveInfo']['types']
+    # One of: Physical, Special
+    moveDmgType = data['moveInfo']['damageType']
+    # Note: the following have data type of String
+    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    movePP = data['moveInfo']['pp']
+    movePower = data['moveInfo']['power']
+    moveAcc = data['moveInfo']['accuracy']
 
     # TO-DO: Get from database and transform to proper format for front-end
 
