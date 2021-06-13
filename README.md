@@ -13,14 +13,14 @@ To set up the database:
 
 Install PostgreSQL and create a server with user `postgres` and password `password`. Alternatively, modify add.py with your username and password. Add a database called Flask.
 
-Then run
+To set up the database, run
 ```
-flask db init
-flask db migrate
-flask db upgrade
+schema.sql
 ```
-
-You should then be able to see a table `info_table` in the Flask database.
+Then, data can be inserted using
+```
+dummy-data.sql
+```
 
 Running the app:
 

@@ -1,14 +1,15 @@
 import json
 from flask import Flask, request, json, jsonify
 from flask_cors import CORS
-from flask_migrate import Migrate
-from models import db, InfoModel
+import psycopg2
+import sys
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost:5432/Flask"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
-migrate = Migrate(app, db)
+
+# connect to the database
+conn = psycopg2.connect(host="localhost",
+    database="Flask", user="postgres", password="password")
+cur = conn.cursor()
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -141,6 +142,25 @@ def all_pokemon():
     types = data['types']  # List of types user would like to filter for (empty means ALL)
 
     # TO-DO: Get from database and transform to proper format for front-end
+    cur.execute('''SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, Move.moveName 
+            FROM (
+            (
+                Pokemon
+                JOIN
+                CanLearnMove
+                ON id=pid
+            )
+            JOIN 
+            Move
+            ON Move.moveName = CanLearnMove.moveName
+        )
+        WHERE
+        (type1 = 'Grass' OR type2 = 'Grass') AND (power >= 90 AND moveType = 'Grass')''')
+
+    print('test', sys.stderr)
+
+    for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, move in cur:
+        print(name, file=sys.stderr)
 
     return jsonify({
         'status': 'success',
@@ -168,9 +188,6 @@ def ping_pong():
 
 @app.route("/test")
 def test():
-    new_user = InfoModel(name='Cinna', age='1')
-    db.session.add(new_user)
-    db.session.commit()
     return jsonify("Success!")
 
 if __name__ == "main":
