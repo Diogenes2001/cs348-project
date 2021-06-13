@@ -36,7 +36,7 @@ CREATE TABLE Pokemon(
 CREATE TABLE PokemonPairings(
     pid1 INTEGER NOT NULL REFERENCES Pokemon(id),
     pid2 INTEGER NOT NULL REFERENCES Pokemon(id),
-    occurances INTEGER NOT NULL CHECK(occurances >= 0),
+    "percentage" REAL NOT NULL CHECK("percentage" >= 0),
     PRIMARY KEY (pid1, pid2)
 );
 
