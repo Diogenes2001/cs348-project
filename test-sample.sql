@@ -17,9 +17,9 @@
 
 -- Example insertion
 
-INSERT INTO OwnedPokemon (species, owner, nickname, level, ability, move1) VALUES
-	(SELECT id, 'user1', 'Dragon', 5, 'Blaze', 'Ember' FROM Pokemon
-	WHERE name = 'Charmander');
+INSERT INTO OwnedPokemon (species, owner, nickname, level, ability, move1)
+	SELECT id, 'user1', 'Dragon', 5, 'Blaze', 'Ember' FROM Pokemon
+	WHERE name = 'Charmander';
 
 -- Example modification
 
