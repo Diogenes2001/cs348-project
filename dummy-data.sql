@@ -60,6 +60,7 @@ INSERT INTO Move VALUES ('Fire Blast', 'Fire', 5, 110, 'special', 85);
 
 INSERT INTO CanLearnMove VALUES (1, 'Razor Leaf');
 INSERT INTO CanLearnMove VALUES (2, 'Razor Leaf');
+INSERT INTO CanLearnMove VALUES (2, 'Solar Beam');
 INSERT INTO CanLearnMove VALUES (3, 'Razor Leaf');
 INSERT INTO CanLearnMove VALUES (3, 'Solar Beam');
 INSERT INTO CanLearnMove VALUES (4, 'Ember');

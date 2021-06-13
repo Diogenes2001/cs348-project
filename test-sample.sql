@@ -1,6 +1,6 @@
 -- FEATURE 1
 
-SELECT name FROM (
+SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, Move.moveName FROM (
 	(
 		Pokemon
 		JOIN
@@ -12,7 +12,7 @@ SELECT name FROM (
 	ON Move.moveName = CanLearnMove.moveName
 )
 WHERE
-power >= 90 AND moveType = 'Grass';
+(type1 = 'Grass' OR type2 = 'Grass') AND (power >= 90 AND moveType = 'Grass');
 
 ----------------------------------------------------
 -- FEATURE 2
