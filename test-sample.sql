@@ -52,7 +52,8 @@ INSERT INTO OwnedPokemon (species, owner, nickname, level, ability, move1)
 
 -- Example modification
 
-UPDATE OwnedPokemon SET level = 3, hp = 15, def = 20
+UPDATE OwnedPokemon SET species = (SELECT id FROM Pokemon WHERE name='Charmander'), 
+	level = 3, hp = 15, def = 20
 WHERE ownedID = 2;
 
 -- Example deletion
