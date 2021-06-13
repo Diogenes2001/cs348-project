@@ -1,0 +1,54 @@
+Feature 1:
+
+
+
+Feature 2:
+
+
+
+Feature 3:
+
+
+
+Feature 4: User-owned pokemon
+
+Before example insertion:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability  |   move1    | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+----------+------------+-------+-------+-------
+       1 |       1 | user1 | Bulby    |     2 | male    | f       | 10 |  10 |  10 |    10 |    10 |  10 | Overgrow | Razor Leaf |       |       |
+       2 |       4 | user2 | Char     |     2 | female  | f       | 11 |  11 |  11 |    11 |    11 |  11 | Blaze    | Ember      |       |       |
+       3 |       7 | user3 | Turtle   |     2 | male    | f       | 12 |  12 |  12 |    12 |    12 |  12 | Torrent  | Bubble     |       |       |
+(3 rows)
+
+After example insertion/before example modification:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability  |   move1    | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+----------+------------+-------+-------+-------
+       1 |       1 | user1 | Bulby    |     2 | male    | f       | 10 |  10 |  10 |    10 |    10 |  10 | Overgrow | Razor Leaf |       |       |
+       2 |       4 | user2 | Char     |     2 | female  | f       | 11 |  11 |  11 |    11 |    11 |  11 | Blaze    | Ember      |       |       |
+       3 |       7 | user3 | Turtle   |     2 | male    | f       | 12 |  12 |  12 |    12 |    12 |  12 | Torrent  | Bubble     |       |       |
+       4 |       4 | user1 | Dragon   |     5 | unknown | f       | 39 |  52 |  43 |    60 |    50 |  65 | Blaze    | Ember      |       |       |
+(4 rows)
+
+After example modification/before example deletion:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability  |   move1    | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+----------+------------+-------+-------+-------
+       1 |       1 | user1 | Bulby    |     2 | male    | f       | 10 |  10 |  10 |    10 |    10 |  10 | Overgrow | Razor Leaf |       |       |
+       3 |       7 | user3 | Turtle   |     2 | male    | f       | 12 |  12 |  12 |    12 |    12 |  12 | Torrent  | Bubble     |       |       |
+       5 |       4 | user1 | Dragon   |     5 | unknown | f       | 39 |  52 |  43 |    60 |    50 |  65 | Blaze    | Ember      |       |       |
+       2 |       4 | user2 | Char     |     3 | female  | f       | 15 |  11 |  20 |    11 |    11 |  11 | Blaze    | Ember      |       |       |
+(4 rows)
+
+After example deletion:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability  |   move1    | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+----------+------------+-------+-------+-------
+       1 |       1 | user1 | Bulby    |     2 | male    | f       | 10 |  10 |  10 |    10 |    10 |  10 | Overgrow | Razor Leaf |       |       |
+       5 |       4 | user1 | Dragon   |     5 | unknown | f       | 39 |  52 |  43 |    60 |    50 |  65 | Blaze    | Ember      |       |       |
+       2 |       4 | user2 | Char     |     3 | female  | f       | 15 |  11 |  20 |    11 |    11 |  11 | Blaze    | Ember      |       |       |
+(3 rows)
+
+
+Feature 5:
