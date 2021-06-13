@@ -17,7 +17,7 @@ Then run
 ```
 flask db init
 flask db migrate
-flask db update
+flask db upgrade
 ```
 
 You should then be able to see a table `info_table` in the Flask database.
