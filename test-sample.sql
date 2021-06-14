@@ -64,18 +64,8 @@ UPDATE "User"
 SET "password" = 'new_encrypted_password'
 WHERE username = 'username';
 
--- Check password is updated
-SELECT "password"
-FROM "User"
-WHERE username = 'username';
-
 -- Example deleting user
 DELETE FROM "User"
-WHERE username = 'username';
-
--- Check user is deleted
-SELECT "password"
-FROM "User"
 WHERE username = 'username';
 
 ----------------------------------------------------

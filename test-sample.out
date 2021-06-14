@@ -31,6 +31,50 @@ Feature 2:
 
 Feature 3:
 
+Before example signup:
+
+ username |      email      | password
+----------+-----------------+----------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+(3 rows)
+
+After example signup/ before example changing password:
+
+ username |      email      |      password
+----------+-----------------+--------------------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+ username | email@address   | encrypted_password
+(4 rows)
+
+Example login with authentication / verifying old password:
+
+      password
+--------------------
+ encrypted_password
+(1 row)
+
+After example changing password/before example deletion:
+
+ username |      email      |        password
+----------+-----------------+------------------------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+ username | email@address   | new_encrypted_password
+(4 rows)
+
+After example deletion:
+
+ username |      email      | password
+----------+-----------------+----------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+(3 rows)
 
 
 Feature 4: User-owned pokemon
@@ -75,3 +119,32 @@ After example deletion:
 
 
 Feature 5:
+
+ pid1 | pid2 | pid3 | pid4 | pid5 | pid6
+------+------+------+------+------+------
+    3 |    6 |    9 |  281 |  282 |  475
+    3 |    6 |    9 |  280 |  282 |  475
+    3 |    5 |    9 |  280 |  282 |  475
+    3 |    4 |    9 |  280 |  282 |  475
+    3 |    5 |    9 |  281 |  282 |  475
+(5 rows)
+
+
+Feature 6:
+
+Fetching from the cursor:
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      2 |    2 |    3 |    4 |    5 |    6 |    9 |       2 |    6 |      2
+(1 row)
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      3 |    3 |    5 |    6 |    7 |    8 |    9 |       3 |   10 |      5
+(1 row)
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      1 |    1 |    2 |    3 |    4 |    5 |    6 |       1 |    1 |      1
+(1 row)
