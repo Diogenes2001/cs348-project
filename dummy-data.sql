@@ -37,8 +37,8 @@ INSERT INTO Pokemon VALUES (8, 'Wartortle', 59, 58, 63, 80, 65, 80, 'Water', NUL
 INSERT INTO Pokemon VALUES (9, 'Blastoise', 79, 78, 103, 120, 135, 115, 'Water', NULL, 'Torrent', NULL, 8, FALSE, FALSE);
 INSERT INTO Pokemon VALUES (280, 'Ralts', 28, 40, 25, 25, 45, 35, 'Psychic', 'Fairy', 'Synchronize', 'Trace', NULL, FALSE, FALSE);
 INSERT INTO Pokemon VALUES (281, 'Kirlia', 38, 50, 35, 35, 65, 55, 'Psychic', 'Fairy', 'Synchronize', 'Trace', 280, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (282, 'Gardevoir', 68, 80, 65, 65, 125, 115, 'Psychic', 'Fairy', 'Synchronize', 'Trace', 281, FALSE, FALSE);
-INSERT INTO Pokemon VALUES (475, 'Gallade', 68, 80, 125, 65, 65, 115, 'Psychic', 'Fighting', 'Steadfast', NULL, 281, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (282, 'Gardevoir', 68, 80, 65, 65, 125, 115, 'Fairy', 'Psychic', 'Synchronize', 'Trace', 281, FALSE, FALSE);
+INSERT INTO Pokemon VALUES (475, 'Gallade', 68, 80, 125, 65, 65, 115, 'Fighting', 'Psychic', 'Steadfast', NULL, 281, FALSE, FALSE);
 
 -- Note: couldn't find dataset for this, making up some for now
 INSERT INTO PokemonPairings VALUES (3, 6, 0.1);
@@ -46,9 +46,9 @@ INSERT INTO PokemonPairings VALUES (3, 9, 0.2);
 INSERT INTO PokemonPairings VALUES (6, 9, 0.05);
 
 -- Using random teams because of limited pokemon
-INSERT INTO Team VALUES (DEFAULT, 1, 2, 3, 4, 5, 6, 1, 10, 5);
-INSERT INTO Team VALUES (DEFAULT, 2, 3, 4, 5, 6, 9, 2, 20, 10);
-INSERT INTO Team VALUES (DEFAULT, 3, 5, 6, 7, 8, 9, 3, 30, 15);
+INSERT INTO Team VALUES (DEFAULT, 1, 2, 3, 4, 5, 6, 1, 1, 1);
+INSERT INTO Team VALUES (DEFAULT, 2, 3, 4, 5, 6, 9, 2, 6, 2);
+INSERT INTO Team VALUES (DEFAULT, 3, 5, 6, 7, 8, 9, 3, 10, 5);
 
 INSERT INTO Move VALUES ('Pound', 'Normal', 35, 40, 'physical', 100);
 INSERT INTO Move VALUES ('Razor Leaf', 'Grass', 25, 55, 'physical', 95);
