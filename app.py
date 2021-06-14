@@ -138,56 +138,144 @@ POKEMON = [
 @app.route('/pokedex', methods=['POST'])
 def all_pokemon():
     data = request.get_json()
+    print(data)
 
-    # POKEMON INFO
-    name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
-    types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
-    # Note: the following have data type of String
-    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
-    id = data['pokemonInfo']['id']
-    hp = data['pokemonInfo']['hp']
-    spd = data['pokemonInfo']['spd']
-    atk = data['pokemonInfo']['atk']
-    defense = data['pokemonInfo']['def']
-    spAtk = data['pokemonInfo']['spAtk']
-    spDef = data['pokemonInfo']['spDef']
+    pokemonConstraints = ['0 = 0'] # always true, used cuz i'm lazy and don't want to write queries with and without WHERE lol
+    for key, val in data['pokemonInfo'].items():
+        if len(val) == 0:
+            continue
+        if key.startswith('max'):
+            pokemonConstraints.append(key[3:] + ' <= ' + val)
+        elif key.startswith('min'):
+            pokemonConstraints.append(key[3:] + ' >= ' + val)
+        elif key == 'types':
+            print(val)
+            joined = '\',\''.join(val)
+            pokemonConstraints.append('(type1 IN (\'' + joined + '\') OR type2 IN (\'' + joined + '\'))')
+        else:
+            try:
+                int(val)
+                pokemonConstraints.append(key + ' = ' + val)
+            except:
+                pokemonConstraints.append(key + ' ILIKE \'%' + val + '%\'')
+    # # POKEMON INFO
+    # name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
+    # types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
+    # # Note: the following have data type of String
+    # # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    # id = data['pokemonInfo']['id']
+    # hp = data['pokemonInfo']['hp']
+    # spd = data['pokemonInfo']['spd']
+    # atk = data['pokemonInfo']['atk']
+    # defense = data['pokemonInfo']['def']
+    # spAtk = data['pokemonInfo']['spAtk']
+    # spDef = data['pokemonInfo']['spDef']
+    moveConstraints = []
+    for key, val in data['moveInfo'].items():
+        if len(val) == 0:
+            continue
+        if key.startswith('max'):
+            moveConstraints.append(key[3:] + ' <= ' + val)
+        elif key.startswith('min'):
+            moveConstraints.append(key[3:] + ' >= ' + val)
+        elif key == 'types':
+            joined = '\',\''.join(val)
+            moveConstraints.append('moveType IN (\'' + joined + '\')')
+        else:
+            try:
+                int(val)
+                moveConstraints.append(key + ' = ' + val)
+            except:
+                moveConstraints.append(key + ' ILIKE \'%' + val + '%\'')
 
-    # MOVE INFO
-    moveName = data['moveInfo']['name']   # Name of learnable move user would like to filter for (empty means ALL)
-    moveTypes = data['moveInfo']['types']
-    # One of: Physical, Special
-    moveDmgType = data['moveInfo']['damageType']
-    # Note: the following have data type of String
-    # Empty string means user did not input anything, otherwise input is an integer (may be negative)
-    movePP = data['moveInfo']['pp']
-    movePower = data['moveInfo']['power']
-    moveAcc = data['moveInfo']['accuracy']
+    # # MOVE INFO
+    # moveName = data['moveInfo']['name']   # Name of learnable move user would like to filter for (empty means ALL)
+    # moveTypes = data['moveInfo']['types']
+    # # One of: Physical, Special
+    # moveDmgType = data['moveInfo']['damageType']
+    # # Note: the following have data type of String
+    # # Empty string means user did not input anything, otherwise input is an integer (may be negative)
+    # movePP = data['moveInfo']['pp']
+    # movePower = data['moveInfo']['power']
+    # moveAcc = data['moveInfo']['accuracy']
 
-    # TO-DO: Get from database and transform to proper format for front-end
-    cur.execute('''SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, Move.moveName 
-            FROM (
-            (
-                Pokemon
-                JOIN
-                CanLearnMove
-                ON id=pid
+    if len(moveConstraints) == 0:
+        cur.execute('''
+            SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+            FROM Pokemon
+            WHERE {0}
+            '''.format(
+                ' AND '.join(pokemonConstraints)
             )
-            JOIN 
-            Move
-            ON Move.moveName = CanLearnMove.moveName
         )
-        WHERE
-        (type1 = 'Grass' OR type2 = 'Grass') AND (power >= 90 AND moveType = 'Grass')''')
 
-    print('test', sys.stderr)
+        # print('test', sys.stderr)
 
-    for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, move in cur:
-        print(name, file=sys.stderr)
+        # for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2 in cur:
+        #     print(name, file=sys.stderr)
 
-    return jsonify({
-        'status': 'success',
-        'pokemon': POKEMON,
-    })
+        pokemon = [[
+                {
+                    'id': id,
+                    'name': name,
+                    'types': (type1, type2) if type2 else (type1,),
+                    'colors': (get_color_by_type(type1),get_color_by_type(type2)) if type2 else (get_color_by_type(type1),),
+                    'hp': baseHp,
+                    'spd': baseSpd,
+                    'atk': baseAtk,
+                    'def': baseDef,
+                    'spAtk': baseSpAtk,
+                    'spDef': baseSpDef,
+                }
+                for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2 in cur
+        ],]
+        return jsonify({
+            'status': 'success',
+            'pokemon': pokemon
+        })
+    else:
+        # TO-DO: Get from database and transform to proper format for front-end
+        cur.execute('''
+            SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, STRING_AGG(Move.moveName, ', ' ORDER BY Move.moveName) 
+                FROM (
+                (
+                    Pokemon
+                    JOIN
+                    CanLearnMove
+                    ON id=pid
+                )
+                JOIN 
+                Move
+                ON Move.moveName = CanLearnMove.moveName
+            )
+            WHERE
+            ({0}) AND ({1})'''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)))
+
+        # print('test', sys.stderr)
+
+        # for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, moves in cur:
+        #     print(name, file=sys.stderr)
+
+        pokemon = [[
+                {
+                    'id': id,
+                    'name': name,
+                    'types': (type1, type2) if type2 else (type1,),
+                    'colors': (get_color_by_type(type1),get_color_by_type(type2)) if type2 else (get_color_by_type(type1),),
+                    'hp': baseHp,
+                    'spd': baseSpd,
+                    'atk': baseAtk,
+                    'def': baseDef,
+                    'spAtk': baseSpAtk,
+                    'spDef': baseSpDef,
+                    'moves': moves
+                }
+                for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, moves in cur
+        ],]
+        return jsonify({
+            'status': 'success',
+            'pokemon': pokemon
+        })
 
 # This route is for feature 2 (recursive query)
 @app.route('/evolutions', methods=['POST'])

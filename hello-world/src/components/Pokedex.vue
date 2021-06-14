@@ -16,7 +16,7 @@
                           placeholder="Enter Pokemon Name">
             </b-form-input>
           </b-form-group>
-          <b-form-checkbox
+          <!-- <b-form-checkbox
             id="checkbox-1"
             v-model="pokemonInfo.evolutions"
             name="checkbox-1"
@@ -24,16 +24,25 @@
             unchecked-value=false
           >
             Show Evolutions
-          </b-form-checkbox>
+          </b-form-checkbox> -->
           <br>
           <b-form-row>
             <b-col><label class="mr-1">ID:</label><b-form-input type="number" v-model="pokemonInfo.id" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">HP:</label><b-form-input type="number" v-model="pokemonInfo.hp" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">Spd:</label><b-form-input type="number" v-model="pokemonInfo.spd" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">Atk:</label><b-form-input type="number" v-model="pokemonInfo.atk" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">Def:</label><b-form-input type="number" v-model="pokemonInfo.def" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">SpAtk:</label><b-form-input type="number" v-model="pokemonInfo.spAtk" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">SpDef:</label><b-form-input type="number" v-model="pokemonInfo.spDef" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max HP:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseHp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max Spd:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseSpd" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max Atk:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseAtk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max Def:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseDef" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max SpAtk:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseSpAtk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max SpDef:</label><b-form-input type="number" v-model="pokemonInfo.maxBaseSpDef" placeholder="Enter #" /></b-col>
+          </b-form-row>
+          <br>
+          <b-form-row>
+            <b-col><label class="mr-1">Min HP:</label><b-form-input type="number" v-model="pokemonInfo.minBaseHp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min Spd:</label><b-form-input type="number" v-model="pokemonInfo.minBaseSpd" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min Atk:</label><b-form-input type="number" v-model="pokemonInfo.minBaseAtk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min Def:</label><b-form-input type="number" v-model="pokemonInfo.minBaseDef" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min SpAtk:</label><b-form-input type="number" v-model="pokemonInfo.minBaseSpAtk" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min SpDef:</label><b-form-input type="number" v-model="pokemonInfo.minBaseSpDef" placeholder="Enter #" /></b-col>
           </b-form-row>
           <br>
           <b-form-group label="Type:">
@@ -54,14 +63,19 @@
               </b-form-input>
             </b-form-group>
           <b-form-row>
-            <b-col><label class="mr-1">PP:</label><b-form-input type="number" v-model="moveInfo.pp" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">Power:</label><b-form-input type="number" v-model="moveInfo.power" placeholder="Enter #" /></b-col>
-            <b-col><label class="mr-1">Accuracy:</label><b-form-input type="number" v-model="moveInfo.accuracy" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max PP:</label><b-form-input type="number" v-model="moveInfo.maxPp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max Power:</label><b-form-input type="number" v-model="moveInfo.maxPower" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Max Accuracy:</label><b-form-input type="number" v-model="moveInfo.maxAccuracy" placeholder="Enter #" /></b-col>
             <b-col><label class="mr-1">Damage Type:</label><b-form-input v-model="moveInfo.damageType" placeholder="Select Type" list="damage-type-list"></b-form-input>
               <datalist id="damage-type-list">
                 <option v-for="(type, index) in damageTypes" :key="index">{{ type }}</option>
               </datalist>
             </b-col>
+          </b-form-row>
+          <b-form-row>
+            <b-col><label class="mr-1">Min PP:</label><b-form-input type="number" v-model="moveInfo.minPp" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min Power:</label><b-form-input type="number" v-model="moveInfo.minPower" placeholder="Enter #" /></b-col>
+            <b-col><label class="mr-1">Min Accuracy:</label><b-form-input type="number" v-model="moveInfo.minAccuracy" placeholder="Enter #" /></b-col>
           </b-form-row>
           <br>
           <b-form-group label="Move Type:">
@@ -124,22 +138,31 @@ export default {
         pokemonInfo: {
             name: '',
             id: '',
-            hp: '',
-            spd: '',
-            atk: '',
-            def: '',
-            spAtk: '',
-            spDef: '',
+            maxBaseHp: '',
+            maxBaseSpd: '',
+            maxBaseAtk: '',
+            maxBaseDef: '',
+            maxBaseSpAtk: '',
+            maxBaseSpDef: '',
+            minBaseHp: '',
+            minBaseSpd: '',
+            minBaseAtk: '',
+            minBaseDef: '',
+            minBaseSpAtk: '',
+            minBaseSpDef: '',
             types: [],
-            evolutions: false
+            //evolutions: false
         },
         moveInfo: {
             name: '',
             types: [],
-            pp: '',
-            power: '',
             damageType: '',
-            accuracy: '',
+            maxPp: '',
+            maxPower: '',
+            maxAccuracy: '',
+            minPp: '',
+            minPower: '',
+            minAccuracy: '',
         },
         options: [
           { text: 'Normal', value: 'normal' },
@@ -166,9 +189,9 @@ export default {
     },
     methods: {
       getPokemon(params) {
-        var path = 'http://localhost:5000/pokedex'
+        var path = 'http://127.0.0.1:5000/pokedex'
         if (this.name && this.evolutions == "true") {
-          path = 'http://localhost:5000/evolutions'
+          path = 'http://127.0.0.1:5000/evolutions'
         }
         console.log(path);
         axios.post(path, params)
@@ -185,20 +208,29 @@ export default {
         this.pokemonInfo.name = '';
         this.pokemonInfo.types = [];
         this.pokemonInfo.id = '';
-        this.pokemonInfo.hp = '';
-        this.pokemonInfo.spd = '';
-        this.pokemonInfo.atk = '';
-        this.pokemonInfo.def = '';
-        this.pokemonInfo.spAtk = '';
-        this.pokemonInfo.spDef = '';
-        this.pokemonInfo.evolutions = false;
+        this.pokemonInfo.maxBaseHp = '';
+        this.pokemonInfo.maxBaseSpd = '';
+        this.pokemonInfo.maxBaseAtk = '';
+        this.pokemonInfo.maxBaseDef = '';
+        this.pokemonInfo.maxBaseSpAtk = '';
+        this.pokemonInfo.maxBaseSpDef = '';
+        this.pokemonInfo.minBaseHp = '';
+        this.pokemonInfo.minBaseSpd = '';
+        this.pokemonInfo.minBaseAtk = '';
+        this.pokemonInfo.minBaseDef = '';
+        this.pokemonInfo.minBaseSpAtk = '';
+        this.pokemonInfo.minBaseSpDef = '';
+        //this.pokemonInfo.evolutions = false;
 
         this.moveInfo.name = '';
         this.moveInfo.types = [];
-        this.moveInfo.PP = '';
-        this.moveInfo.power = '';
         this.moveInfo.damageType = '';
-        this.moveInfo.accuracy = '';
+        this.moveInfo.maxPp = '';
+        this.moveInfo.maxPower = '';
+        this.moveInfo.maxAccuracy = '';
+        this.moveInfo.minPP = '';
+        this.moveInfo.minPower = '';
+        this.moveInfo.minAccuracy = '';
       },
       getParams() {
         const params = {
