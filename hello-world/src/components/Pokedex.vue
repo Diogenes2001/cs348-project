@@ -135,7 +135,7 @@ export default {
         },
         moveInfo: {
             name: '',
-            type: '',
+            types: [],
             pp: '',
             power: '',
             damageType: '',
