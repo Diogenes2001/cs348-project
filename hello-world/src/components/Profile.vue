@@ -31,7 +31,9 @@
       <td>SpAtk: {{ spAtk }}</td>
       <td>SpDef: {{ spDef }}</td>
     </tr>
-    <tr></tr>
+    <tr>
+      {{ moves ? "Moves: " + moves : "" }}
+    </tr>
   </tbody>
 </table>
 </b-row>
@@ -69,7 +71,8 @@ export default {
     atk: Number,
     def: Number,
     spAtk: Number,
-    spDef: Number
+    spDef: Number,
+    moves: String,
   }
 }
 </script>

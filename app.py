@@ -249,7 +249,9 @@ def all_pokemon():
                 ON Move.moveName = CanLearnMove.moveName
             )
             WHERE
-            ({0}) AND ({1})'''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)))
+            ({0}) AND ({1})
+            GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+            '''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)))
 
         # print('test', sys.stderr)
 
