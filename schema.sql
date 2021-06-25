@@ -60,8 +60,8 @@ CREATE TABLE Move(
     moveName VARCHAR(30) NOT NULL PRIMARY KEY,
     moveType VARCHAR(16) NOT NULL REFERENCES "Type"(typeName),
     pp INTEGER NOT NULL CHECK(pp > 0),
-    power INTEGER NOT NULL 
-        CHECK(power % 5 = 0 AND power >= 0 AND power <= 250),
+    power INTEGER 
+        CHECK(power >= 0 AND power <= 250),
     damageType VARCHAR(10) NOT NULL 
         CHECK(damageType IN ('physical', 'special')),
     accuracy INTEGER 
