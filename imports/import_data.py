@@ -1,5 +1,6 @@
 import pandas
 import psycopg2
+import ast
 
 conn = psycopg2.connect(host="localhost",
     database="Flask", user="postgres", password="password")
@@ -151,8 +152,33 @@ def importMoves():
 #
 
 def importCanLearnMove():
-    canLearnMove = pandas.read_csv()
-    # finish this
+    canLearnMove = pandas.read_csv("pokemon-data.csv", sep=';')
+    
+    cur.execute("prepare pokemonExists as SELECT id FROM Pokemon WHERE name=$1")
+    cur.execute("prepare moveExists as SELECT moveName FROM Move WHERE moveName=$1")
+    cur.execute("prepare canLearnInsert as INSERT INTO CanLearnMove VALUES ($1,$2)")
+
+    for idx, info in canLearnMove.iterrows():
+
+        # query database to see if this pokemon is one we keep track of and get its id
+        cur.execute("execute pokemonExists ({0})".format("'" + info['Name'] + "'"))
+        tup = cur.fetchone()
+
+        if tup is not None:
+
+            id = tup[0]
+            # parse moves column
+            moves = ast.literal_eval(info['Moves'])
+            moves = list(dict.fromkeys(moves))
+
+            for move in moves:
+                cur.execute("execute moveExists ({0})".format("'" + move + "'"))
+                if cur.fetchone() is not None:
+                    # add to DB instead of printing :)
+                    cur.execute("execute canLearnInsert ({0}, {1})".format(id, "'" + move + "'"))
+    
+    conn.commit()
+
 
 
 
@@ -163,6 +189,6 @@ def importCanLearnMove():
 #importTypes()
 #importPokemon()
 #importMoves()
-importCanLearnMove()
+#importCanLearnMove()
 
 cur.close()
