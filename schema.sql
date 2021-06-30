@@ -52,8 +52,8 @@ CREATE TABLE Team(
     starter INTEGER NOT NULL CHECK(starter >= 1 AND starter <= 6),
     wins INTEGER NOT NULL CHECK(wins >= 0),
     losses INTEGER NOT NULL CHECK(losses >= 0),
-    CHECK(pid1 < pid2 AND pid2 < pid3 AND pid3 < pid4 AND
-        pid4 < pid5 AND pid5 < pid6)
+    CHECK(pid1 <= pid2 AND pid2 <= pid3 AND pid3 <= pid4 AND
+        pid4 <= pid5 AND pid5 <= pid6)
 );
 
 CREATE TABLE Move(
