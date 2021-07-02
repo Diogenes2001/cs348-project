@@ -49,5 +49,6 @@ for id, name in cur:
 
 msg = "pokemon skipped: " + ','.join(skipped) + "\npokemon failed: " + ','.join(failed)
 print(msg)
-with open('image_scraper.log', 'wb') as handler:
-    handler.write(msg)
+f = open("image_scraper.log", "w")
+f.write(msg)
+f.close()
