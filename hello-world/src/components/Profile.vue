@@ -21,18 +21,24 @@
   <tbody>
     <tr>
       <td>HP: {{ hp }}</td>
-      <td>Spd: {{ spd }}</td>
     </tr>
     <tr>
       <td>Atk: {{ atk }}</td>
+    </tr>
+    <tr>
       <td>Def: {{ def }}</td>
     </tr>
     <tr>
       <td>SpAtk: {{ spAtk }}</td>
+    </tr>
+    <tr>
       <td>SpDef: {{ spDef }}</td>
     </tr>
     <tr>
-      {{ moves ? "Moves: " + moves : "" }}
+      <td>Spd: {{ spd }}</td>
+    </tr>
+    <tr>
+      <td>{{ moves ? "Selected Moves Known: " + moves : "" }}</td>
     </tr>
   </tbody>
 </table>

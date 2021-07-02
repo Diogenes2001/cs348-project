@@ -111,6 +111,7 @@
         v-bind:hp="mon.hp" v-bind:spd="mon.spd"
         v-bind:atk="mon.atk" v-bind:def="mon.def"
         v-bind:spAtk="mon.spAtk" v-bind:spDef="mon.spDef"
+        v-bind:moves="mon.moves"
         />
       <br><br>
       </b-col>
