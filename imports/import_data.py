@@ -111,7 +111,12 @@ def importPokemon():
         
         # need to have "alternate form name" = null
         if pandas.isna(info['AlternateFormName']) and not pandas.isna(info['Pre-EvolutionPokemonId']):
-            cur.execute("execute updateEvolution ({0}, {1})".format(info['PokedexNumber'], info['Pre-EvolutionPokemonId']))
+            #print("Adding evolution to " + str(info['PokedexNumber']) + " " + str(info['Pre-EvolutionPokemonId']))
+            other = pokemon.loc[pokemon['PokemonId'] == info['Pre-EvolutionPokemonId']].iloc[0]
+            nr = other['PokedexNumber']
+            #print(str(info['Pre-EvolutionPokemonId']) + " " + str(other['PokemonId']) + " " + str(nr))
+            #print(other)
+            cur.execute("execute updateEvolution ({0}, {1})".format(nr, info['PokedexNumber']))
     
     conn.commit()
 
@@ -272,9 +277,9 @@ def importTeams():
 #
 
 #importTypes()
-#importPokemon()
+importPokemon()
 #importMoves()
 #importCanLearnMove()
-importTeams()
+#importTeams()
 
 cur.close()
