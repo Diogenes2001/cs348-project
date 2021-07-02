@@ -26,7 +26,7 @@ for id, name in cur:
     filename = '../hello-world/src/assets/pokemon/{0}.png'.format(id)
     if os.path.isfile(filename): # if already have image, no need to get another one
         print("image exists for pokemon {0}: {1}".format(id, name))
-        skipped.append(id)
+        skipped.append(str(id))
         continue
     print("getting image for pokemon {0}: {1}".format(id, name))
     try:
@@ -45,7 +45,7 @@ for id, name in cur:
         print("failed to get image for pokemon {0}: {1}".format(id, name))
         if os.path.exists(filename):
             os.remove(filename)
-        failed.append(id)
+        failed.append(str(id))
 
 msg = "pokemon skipped: " + ','.join(skipped) + "\npokemon failed: " + ','.join(failed)
 print(msg)
