@@ -58,7 +58,7 @@
                         label-for="form-move-input">
               <b-form-input id="form-move-input"
                             type="text"
-                            v-model="moveInfo.name"
+                            v-model="moveInfo.moveName"
                             placeholder="Enter Move Name">
               </b-form-input>
             </b-form-group>
@@ -222,7 +222,7 @@ export default {
         this.pokemonInfo.minBaseSpDef = '';
         //this.pokemonInfo.evolutions = false;
 
-        this.moveInfo.name = '';
+        this.moveInfo.moveName = '';
         this.moveInfo.types = [];
         this.moveInfo.damageType = '';
         this.moveInfo.maxPp = '';

@@ -181,6 +181,8 @@ def all_pokemon():
         elif key == 'types':
             joined = '\',\''.join(val)
             moveConstraints.append('moveType IN (\'' + joined + '\')')
+        elif key == 'name' or key == 'moveName':
+            moveConstraints.append('Move.moveName' + ' ILIKE \'%' + val + '%\'')
         else:
             try:
                 int(val)
