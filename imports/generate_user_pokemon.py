@@ -12,24 +12,30 @@ def createQuery(pid, user):
               {}, '{}', '{}', {}, {}, {}, {}, {}, {}, '{}', '{}', NULL, NULL, NULL)'''
 
     # find possible moves for the pokemon
-    cur.execute('''
-        SELECT moveName FROM CanLearnMove WHERE pid={}
-        '''.format(pid)
-    )
-    move = cur.fetchone()
-    if move is None:
-        return ""
-    move = move[0]
+    try:
+        cur.execute('''
+            SELECT moveName FROM CanLearnMove WHERE pid={}
+            '''.format(pid)
+        )
+        move = cur.fetchone()
+        if move is None:
+            return ""
+        move = move[0]
+    except:
+        print("Failed to find moveName for pid " + str(pid))
 
     # find ability for the pokemon
-    cur.execute('''
-        SELECT ability1 FROM Pokemon WHERE id={}
-        '''.format(pid)
-    )
-    ability = cur.fetchone()
-    if ability is None:
-        return ""
-    ability = ability[0]
+    try:
+        cur.execute('''
+            SELECT ability1 FROM Pokemon WHERE id={}
+            '''.format(pid)
+        )
+        ability = cur.fetchone()
+        if ability is None:
+            return ""
+        ability = ability[0]
+    except:
+        print("Failed to find ability for pid " + str(pid))
 
     # generate random values for the fields
     level = random.randint(1, 100)
@@ -67,7 +73,7 @@ def generateUserPokemon():
         totalIds = len(pokemonIds)
     except:
         conn.rollback()
-        print("Failed")
+        print("Failed to find Pokemon")
         return
 
     # user 1, generate 50 pokemon
@@ -76,7 +82,11 @@ def generateUserPokemon():
         pid = random.randrange(0, totalIds)
         query = createQuery(pid, 'user1')
         if query:
-            cur.execute(query)
+            try:
+                cur.execute(query)
+            except:
+                print("Failed to execute: " + query)
+                conn.rollback()
 
     conn.commit()
 
@@ -86,7 +96,11 @@ def generateUserPokemon():
         pid = random.randrange(0, totalIds)
         query = createQuery(pid, 'user2')
         if query:
-            cur.execute(query)
+            try:
+                cur.execute(query)
+            except:
+                print("Failed to execute: " + query)
+                conn.rollback()
 
     conn.commit()
 
