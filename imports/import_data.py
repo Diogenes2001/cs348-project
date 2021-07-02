@@ -207,10 +207,10 @@ def importEffectiveness():
 # choose what to import down here
 #
 
-# importTypes()
-# importPokemon()
-# importMoves()
-# importCanLearnMove()
-# importEffectiveness()
+importTypes()
+importPokemon()
+importMoves()
+importCanLearnMove()
+importEffectiveness()
 
 cur.close()
