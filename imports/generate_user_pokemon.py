@@ -90,10 +90,5 @@ def generateUserPokemon():
 
     conn.commit()
 
-#
-# choose what to import down here
-#
-
 generateUserPokemon()
-
 cur.close()
