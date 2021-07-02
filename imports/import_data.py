@@ -1,6 +1,7 @@
 import pandas
 import psycopg2
 import ast
+import os
 
 conn = psycopg2.connect(host="localhost",
     database="Flask", user="postgres", password="password")
@@ -110,7 +111,12 @@ def importPokemon():
         
         # need to have "alternate form name" = null
         if pandas.isna(info['AlternateFormName']) and not pandas.isna(info['Pre-EvolutionPokemonId']):
-            cur.execute("execute updateEvolution ({0}, {1})".format(info['PokedexNumber'], info['Pre-EvolutionPokemonId']))
+            #print("Adding evolution to " + str(info['PokedexNumber']) + " " + str(info['Pre-EvolutionPokemonId']))
+            other = pokemon.loc[pokemon['PokemonId'] == info['Pre-EvolutionPokemonId']].iloc[0]
+            nr = other['PokedexNumber']
+            #print(str(info['Pre-EvolutionPokemonId']) + " " + str(other['PokemonId']) + " " + str(nr))
+            #print(other)
+            cur.execute("execute updateEvolution ({0}, {1})".format(nr, info['PokedexNumber']))
     
     conn.commit()
 
@@ -203,6 +209,92 @@ def importEffectiveness():
     conn.commit()
     print("Finished importing type effectiveness")
 
+def importTeams():
+    directory = os.fsencode("../scraping")
+
+    teamids = set()
+
+    cur.execute("prepare pokemonExists as SELECT id FROM Pokemon WHERE name=$1")
+    cur.execute("prepare getTeam as SELECT teamID, wins, losses FROM Team "
+        "WHERE pid1 = $1 AND pid2 = $2 AND pid3 = $3 AND pid4 = $4 AND pid5 = $5 AND pid6 = $6 AND starter = $7")
+    cur.execute("prepare createTeam as INSERT INTO Team VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9)")
+    cur.execute("prepare updateTeam as UPDATE Team SET wins = $1, losses = $2 WHERE teamID = $3")
+
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        if filename.endswith(".csv"): 
+            data = pandas.read_csv("../scraping/" + filename)
+            for idx, info in data.iterrows():
+                if info['gameID'] not in teamids:
+                    teamids.add(info['gameID'])
+
+                    foundall = True
+                    # try to find all pokemon in the database
+                    pokemon = []
+                    for i in range(1,7):
+                        if pandas.isna(info['pokemon' + str(i)]):
+                            foundall = False
+                            break
+                        name, *vals = info['pokemon' + str(i)].split(',')
+
+                        if name.find('-') and name not in ['Ho-Oh', 'Porygon-Z', 'Jangmo-o', 'Hakamo-o', 'Kommo-o']:
+                            name, *app = name.split('-')
+
+                        cur.execute("execute pokemonExists ({0})".format("'" + name + "'"))
+                        tup = cur.fetchone()
+
+                        if tup is not None:
+                            pokemon.append(tup[0])
+                        else:
+                            foundall = False
+                            print("Could not find " + name)
+                            break
+
+                    if not foundall:
+                        break
+
+                    # if found all pokemon, retrieve id of that team
+
+                    starter = pokemon[0]
+                    pokemon.sort()
+                    starter = pokemon.index(starter) + 1
+
+                    cur.execute("execute getTeam ({0}, {1}, {2}, {3}, {4}, {5}, {6})".format(
+                        pokemon[0], pokemon[1], pokemon[2], pokemon[3], pokemon[4], pokemon[5], starter
+                    ))
+
+                    tup = cur.fetchone()
+
+                    if tup is not None:
+                        id = tup[0]
+                        wins = tup[1]
+                        losses = tup[2]
+
+                        if info['win']:
+                            wins += 1
+                        else:
+                            losses += 1
+                        
+                        cur.execute("execute updateTeam ({0}, {1}, {2})".format(wins, losses, id))
+
+                    else:
+                        wins = 0
+                        losses = 0
+                        if info['win']:
+                            wins = 1
+                        else:
+                            losses = 1
+
+                        cur.execute("execute createTeam ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})".format(
+                            pokemon[0], pokemon[1], pokemon[2], pokemon[3], pokemon[4], pokemon[5], starter,
+                            wins, losses
+                        ))
+
+                    # update database after each team was added
+                    conn.commit()
+
+
+
 #
 # choose what to import down here
 #
@@ -212,5 +304,6 @@ importPokemon()
 importMoves()
 importCanLearnMove()
 importEffectiveness()
+importTeams()
 
 cur.close()
