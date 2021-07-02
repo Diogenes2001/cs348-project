@@ -1,4 +1,4 @@
-moveType, pokemonType, effectiveness
+moveType,pokemonType,effectiveness
 Normal,Rock,0.5
 Normal,Ghost,0
 Normal,Steel,0

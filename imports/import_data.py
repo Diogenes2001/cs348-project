@@ -179,16 +179,38 @@ def importCanLearnMove():
     
     conn.commit()
 
+def importEffectiveness():
+    print("Importing type effectiveness...")
+    types = ['Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug', 'Rock', 'Ghost', 'Dark', 'Dragon', 'Steel', 'Fairy']
+    effectiveness = pandas.read_csv('effectiveness.csv')
 
+    cur.execute('''prepare effectivenessInsert as INSERT INTO Effectiveness VALUES 
+        ($1, $2, $3)''')
 
+    d = dict()
+    for t in types:
+        d[t] = dict()
+    for idx, info in effectiveness.iterrows():
+        d[info['moveType']][info['pokemonType']] = info['effectiveness']
+    for t1 in types:
+        for t2 in types:
+            if t2 not in d[t1]:
+                d[t1][t2] = '1'
+            cur.execute("execute effectivenessInsert ({0}, {1}, {2})".format(
+                "'" + t1 + "'", "'" + t2 + "'", d[t1][t2]
+            ))
+    
+    conn.commit()
+    print("Finished importing type effectiveness")
 
 #
 # choose what to import down here
 #
 
-#importTypes()
-#importPokemon()
-#importMoves()
-#importCanLearnMove()
+# importTypes()
+# importPokemon()
+# importMoves()
+# importCanLearnMove()
+# importEffectiveness()
 
 cur.close()
