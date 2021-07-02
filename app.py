@@ -204,6 +204,7 @@ def all_pokemon():
             SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
             FROM Pokemon
             WHERE {0}
+            ORDER BY id
             '''.format(
                 ' AND '.join(pokemonConstraints)
             )
@@ -251,6 +252,7 @@ def all_pokemon():
             WHERE
             ({0}) AND ({1})
             GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+            ORDER BY id
             '''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)))
 
         # print('test', sys.stderr)
