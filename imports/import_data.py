@@ -227,8 +227,8 @@ def importTeams():
             try:
                 data = pandas.read_csv("../scraping/" + filename, encoding='cp1252') # this allows for decoding of ' (single quote)
                 for idx, info in data.iterrows():
-                    if info['gameID'] not in teamids:
-                        teamids.add(info['gameID'])
+                    if info['gameID'] + info['player'] not in teamids:
+                        teamids.add(info['gameID']+info['player'])
 
                         foundall = True
                         # try to find all pokemon in the database

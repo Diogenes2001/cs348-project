@@ -35,11 +35,23 @@ In another run `cd hello-world && npm run serve`
 
 ## Features:
 
-1. **Pokedex** <br>
-Searching of the Pokemon database is fully implemented. The backend is in the `app.py` file and the frontend is in `hello-world/src/components/Pokedex.vue` and `hello-world/src/components/Profile.vue`.
+### **Pokedex**
 
-2. **Users** <br>
-This feature supports sign up, login/logout, changing passwords as well as deleting accounts. The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `Login.vue`, `Signup.vue`, `ChangePassword.vue` and `Delete.vue`.
+We support the following functionalities: 
+- Searching of the Pokemon database based on Pokemon stats and names
+- Searching of the Pokemon database based on charactersitics of the moves they know 
+
+The backend is in the `app.py` file and the frontend is in `hello-world/src/components/Pokedex.vue` and `hello-world/src/components/Profile.vue`.
+
+### **Users**
+
+We support the following functionalities:
+- Signing up of new users
+- Logging in and logging out of existing accounts
+- Changing an accounts password
+- Deleting an account
+
+The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `Login.vue`, `Signup.vue`, `ChangePassword.vue` and `Delete.vue`.
 
 ## References:
 
