@@ -134,6 +134,81 @@ POKEMON = [
     }],
 ]
 
+@app.route('/deleteaccount', methods=['POST'])
+def try_deleteaccount():
+    data = request.get_json()
+
+    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+
+    tup = cur.fetchone()
+    if tup is not None:
+        passw = tup[0]
+
+        if passw == data['password']:
+
+            cur.execute('''DELETE FROM "User" WHERE username='{0}' '''.format(data['username']))
+
+            conn.commit()
+
+            return jsonify({'status': 'success', 'error': 'Successfully deleted your account.'})
+
+    return jsonify({'status': 'failure', 'error': 'The password was incorrect.'})
+
+@app.route('/changepass', methods=['POST'])
+def try_changepass():
+    data = request.get_json()
+
+    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+
+    tup = cur.fetchone()
+    if tup is not None:
+        passw = tup[0]
+
+        if passw == data['curpass']:
+
+            cur.execute('''UPDATE "User" SET password = '{0}' WHERE username='{1}' '''.format(data['newpass'], data['username']))
+
+            conn.commit()
+
+            return jsonify({'status': 'success', 'error': 'Successfully updated your password.'})
+
+    return jsonify({'status': 'failure', 'error': 'Current password was incorrect.'})
+
+@app.route('/signup', methods=['POST'])
+def try_signup():
+    data = request.get_json()
+
+    cur.execute('''SELECT * FROM "User" WHERE username='{0}' '''.format(data['username']))
+
+    tup = cur.fetchone()
+    if tup is not None:
+        return jsonify({ 'status': 'failure', 'error': 'Username is already taken.'})
+    
+    cur.execute('''INSERT INTO "User" VALUES ('{0}', '{1}', '{2}') '''.format(data['username'], data['email'], data['password']))
+
+    conn.commit()
+
+    return jsonify({
+        'status': 'success'
+    })
+
+@app.route('/login', methods=['POST'])
+def try_login():
+    data = request.get_json()
+
+    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+
+    tup = cur.fetchone()
+    if tup is not None:
+        passw = tup[0]
+
+        if passw == data['password']:
+            return jsonify({
+                'status': 'success'
+            })
+
+    return jsonify({ 'status': 'failure', 'error': 'Username or password is incorrect.'})
+
 # This route is for feature 1 (basic pokemon query)
 @app.route('/pokedex', methods=['POST'])
 def all_pokemon():
