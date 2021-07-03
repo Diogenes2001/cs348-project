@@ -10,7 +10,7 @@
                     <b-form-input type="password" v-model="form.password" id="input-3" placeholder="Enter password" required></b-form-input>
                 </b-form-group>
 
-                <div style="color: red; padding-bottom: 5px;" v-show="this.msg == null">Warning: If you delete your account, you will lose all your custom pokemon!</div>
+                <div style="color: red; padding-bottom: 5px;" v-show="this.msg == ''">Warning: If you delete your account, you will lose all your custom pokemon!</div>
 
                 <div style="color: red; padding-bottom: 5px;" v-show="this.error">{{ this.error }}</div>
                 <div style="color: green; padding-bottom: 5px;" v-show="this.msg">{{ this.msg }}</div>
