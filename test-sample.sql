@@ -21,7 +21,7 @@ SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1,
 	ON Move.moveName = CanLearnMove.moveName
 )
 WHERE
-(type1 = 'Grass' OR type2 = 'Grass') AND accuracy >= 90 AND moveType = 'Grass'
+(type1 = 'Ground' OR type2 = 'Ground') AND Move.moveName = 'Draco Meteor'
 GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2;
 
 ----------------------------------------------------
