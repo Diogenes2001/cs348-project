@@ -43,7 +43,7 @@ SELECT * FROM Pokemon
 WHERE id IN (
 	SELECT evolvesInto
 	FROM Evolution
-	WHERE evolvesFrom = (SELECT id FROM Pokemon WHERE name='Ralts')
+	WHERE evolvesFrom = 280
 );
 
 ----------------------------------------------------
