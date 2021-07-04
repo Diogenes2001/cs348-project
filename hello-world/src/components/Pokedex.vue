@@ -1,7 +1,7 @@
 <template>
 <div>
   <myHeader />
-  <div>
+  <div style="padding-top: 20px;">
   <b-container class="bv-example-row">
     <b-button pill v-b-toggle.collapse-1 variant="info">Filters</b-button>
     <b-collapse id="collapse-1" class="mt-2">

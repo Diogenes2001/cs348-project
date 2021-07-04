@@ -2,6 +2,7 @@ import pandas
 import psycopg2
 import ast
 import os
+from collections import defaultdict
 
 conn = psycopg2.connect(host="localhost",
     database="Flask", user="postgres", password="password")
@@ -226,8 +227,8 @@ def importTeams():
             try:
                 data = pandas.read_csv("../scraping/" + filename, encoding='cp1252') # this allows for decoding of ' (single quote)
                 for idx, info in data.iterrows():
-                    if info['gameID'] not in teamids:
-                        teamids.add(info['gameID'])
+                    if info['gameID'] + info['player'] not in teamids:
+                        teamids.add(info['gameID']+info['player'])
 
                         foundall = True
                         # try to find all pokemon in the database
@@ -297,6 +298,64 @@ def importTeams():
                 print("Could not get team froms {0}, skipping".format(filename))
 
 
+def importPokemonPairings():
+    print("Importing Pokemon pairings...")
+
+    # prepare an insert statement
+    cur.execute(
+        "prepare pokemonPairingsInsert as "
+        "INSERT INTO PokemonPairings(pid1, pid2, Percentage) "
+        "VALUES ($1, $2, $3)"
+    )
+
+    pokemon_name_to_id_map = {}
+    pokemon = pandas.read_csv('PokemonDatabase.csv')
+    for idx, info in pokemon.iterrows():
+        pokemon_name_to_id_map[info['PokemonName']] = info['PokedexNumber']
+
+    with open('moveset-gen8ou-1825.txt', 'r') as f:
+        lines = f.readlines()
+
+    num_lines = len(lines)
+
+    breaks = list(filter(lambda line_num : lines[line_num] == lines[0], list(range(num_lines))))
+    pokemon_starts = list(filter(lambda break_num : break_num == 0 or breaks[break_num] == breaks[break_num - 1] + 1,
+                                 list(range(len(breaks)))))
+    pokemon_pairings = defaultdict(int)
+    for start in pokemon_starts:
+        start_line_num = breaks[start]
+        pname1 = " ".join(lines[start_line_num + 1].split()[1:-1])
+        if pname1 in pokemon_name_to_id_map:
+            pid1 = pokemon_name_to_id_map[pname1]
+
+            line_num = start_line_num + 1
+            teammates = False
+            while True:
+                if 'Teammates' in lines[line_num]:
+                    teammates = True
+                elif teammates:
+                    if line_num in breaks:
+                        break
+
+                    parts = lines[line_num].split()[1:-1]
+                    pname2 = " ".join(parts[:-1])
+                    if pname2 in pokemon_name_to_id_map:
+                        pid2 = pokemon_name_to_id_map[pname2]
+                        percentage = float(parts[-1][:-1]) / 100
+
+                        if pid1 < pid2:
+                            pokemon_pairings[(pid1, pid2)] += percentage / 2
+                        else:
+                            pokemon_pairings[(pid2, pid1)] += percentage / 2
+
+                line_num += 1
+
+    for (pid1, pid2), percentage in pokemon_pairings.items():
+        cur.execute("execute pokemonPairingsInsert({0}, {1}, {2})".format(pid1, pid2, percentage))
+    conn.commit()
+
+    print("Finished importing Pokemon pairings...")
+
 
 #
 # choose what to import down here
@@ -308,5 +367,6 @@ importMoves()
 importCanLearnMove()
 importEffectiveness()
 importTeams()
+importPokemonPairings()
 
 cur.close()

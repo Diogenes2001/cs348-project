@@ -1,0 +1,132 @@
+Feature 1:
+
+Example without move search:
+
+ id |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
+----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
+  4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
+  5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
+  6 | Charizard  |     78 |     100 |     104 |      78 |       159 |       115 | Fire  | Flying
+(3 rows)
+
+Example with move search:
+
+ id |   name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2  |       string_agg
+----+-----------+--------+---------+---------+---------+-----------+-----------+-------+--------+------------------------
+  1 | Bulbasaur |     45 |      45 |      49 |      49 |        65 |        65 | Grass | Poison | Razor Leaf
+  2 | Ivysaur   |     60 |      60 |      62 |      63 |        80 |        80 | Grass | Poison | Razor Leaf, Solar Beam
+  3 | Venusaur  |     80 |      80 |     100 |     123 |       122 |       120 | Grass | Poison | Razor Leaf, Solar Beam
+(3 rows)
+
+
+Feature 2:
+
+ id  |   name    | basehp | basespd | baseatk | basedef | basespatk | basespdef |  type1  |  type2   |  ability1   | ability2 | evolvesfromid | islegendary | ismythical
+-----+-----------+--------+---------+---------+---------+-----------+-----------+---------+----------+-------------+----------+---------------+-------------+------------
+ 281 | Kirlia    |     38 |      50 |      35 |      35 |        65 |        55 | Psychic | Fairy    | Synchronize | Trace    |           280 | f           | f
+ 282 | Gardevoir |     68 |      80 |      65 |      65 |       125 |       115 | Psychic | Fairy    | Synchronize | Trace    |           281 | f           | f
+ 475 | Gallade   |     68 |      80 |     125 |      65 |        65 |       115 | Psychic | Fighting | Steadfast   |          |           281 | f           | f
+(3 rows)
+
+
+Feature 3:
+
+Before example signup:
+
+ username |      email      | password
+----------+-----------------+----------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+(3 rows)
+
+After example signup/ before example changing password:
+
+ username |      email      |      password
+----------+-----------------+--------------------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+ username | email@address   | encrypted_password
+(4 rows)
+
+Example login with authentication / verifying old password:
+
+      password
+--------------------
+ encrypted_password
+(1 row)
+
+After example changing password/before example deletion:
+
+ username |      email      |        password
+----------+-----------------+------------------------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+ username | email@address   | new_encrypted_password
+(4 rows)
+
+After example deletion:
+
+ username |      email      | password
+----------+-----------------+----------
+ user1    | user1@gmail.com | pass1
+ user2    | user1@gmail.com | pass2
+ user3    | user1@gmail.com | pass3
+(3 rows)
+
+
+Feature 4: User-owned pokemon
+
+Check after example insertion/before example modification:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability | move1 | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+---------+-------+-------+-------+-------
+      56 |       4 | user1 | Dragon   |     5 | unknown | f       | 39 |  52 |  43 |    60 |    50 |  65 | Blaze   | Ember |       |       |
+(1 row)
+
+Check after example modification/before example deletion:
+
+ ownedid | species | owner | nickname | level | gender  | isshiny | hp | atk | def | spatk | spdef | spd | ability | move1 | move2 | move3 | move4
+---------+---------+-------+----------+-------+---------+---------+----+-----+-----+-------+-------+-----+---------+-------+-------+-------+-------
+      56 |       4 | user1 | Dragon   |     3 | unknown | f       | 15 |  52 |  20 |    60 |    50 |  65 | Blaze   | Ember |       |       |
+(1 row)
+
+After example deletion:
+
+ ownedid | species | owner | nickname | level | gender | isshiny | hp | atk | def | spatk | spdef | spd | ability | move1 | move2 | move3 | move4
+---------+---------+-------+----------+-------+--------+---------+----+-----+-----+-------+-------+-----+---------+-------+-------+-------+-------
+(0 rows)
+
+
+Feature 5:
+
+ pid1 | pid2 | pid3 | pid4 | pid5 | pid6
+------+------+------+------+------+------
+    3 |    6 |    9 |  281 |  282 |  475
+    3 |    6 |    9 |  280 |  282 |  475
+    3 |    5 |    9 |  280 |  282 |  475
+    3 |    4 |    9 |  280 |  282 |  475
+    3 |    5 |    9 |  281 |  282 |  475
+(5 rows)
+
+
+Feature 6:
+
+Fetching from the cursor:
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      2 |    2 |    3 |    4 |    5 |    6 |    9 |       2 |    6 |      2
+(1 row)
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      3 |    3 |    5 |    6 |    7 |    8 |    9 |       3 |   10 |      5
+(1 row)
+
+ teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
+--------+------+------+------+------+------+------+---------+------+--------
+      1 |    1 |    2 |    3 |    4 |    5 |    6 |       1 |    1 |      1
+(1 row)
