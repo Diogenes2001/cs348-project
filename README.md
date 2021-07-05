@@ -45,10 +45,13 @@ The backend is in the `app.py` file and the frontend is in `hello-world/src/comp
 
 ### **Pokemon Details**
 We support the following functionalities:
-- Pokemon stats
-- All possible moves the Pokemon can learn
-- Which Pokemon it can evolve into
 - Clicking on images on the Pokedex and Team pages to see the Pokemon's details
+- Details include:
+    - Pokemon stats
+    - All possible moves the Pokemon can learn
+    - Which Pokemon it can evolve into (including links to their pages)
+
+The backend is in the `app.py` file and the frontend is in `hello-world/src/components/Pokemon.vue` and `hello-world/src/components/Profile.vue`.
 
 ### **Users**
 
