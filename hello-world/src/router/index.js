@@ -9,6 +9,7 @@ import Signup from '../components/Signup.vue'
 import ChangePassword from '../components/ChangePassword.vue'
 import Delete from '../components/Delete.vue'
 import TeamGeneration from '../components/TeamGeneration.vue'
+import Pokemon from '../components/Pokemon.vue'
 
 Vue.component('myHeader', myHeader);
 Vue.component('profile', Profile);
@@ -57,6 +58,11 @@ export default new Router({
       path: '/teams',
       name: 'Generate Teams',
       component: TeamGeneration
+    },
+    {
+      path: '/pokemon/:id',
+      name: 'Pokemon Details',
+      component: Pokemon
     }
   ]
 })

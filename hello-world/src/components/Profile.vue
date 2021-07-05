@@ -1,5 +1,5 @@
 <template>
-<b-container>
+<b-container href="'/pokemon/' + id">
 
 <!-- NAME, IMAGE, TYPE -->
 <h3>{{ id }}: {{ pokemon }}</h3>
@@ -38,7 +38,7 @@
       <td>Spd: {{ spd }}</td>
     </tr>
     <tr>
-      <td>{{ moves ? "Selected Moves Known: " + moves : "" }}</td>
+      <td>{{ moves ? "Selected Moves Known: " + moves : (evolvesFromName ? "Evolves from: " + evolvesFromName : "") }}</td>
     </tr>
   </tbody>
 </table>
@@ -79,6 +79,7 @@ export default {
     spAtk: Number,
     spDef: Number,
     moves: String,
+    evolvesFromName: String,
   }
 }
 </script>

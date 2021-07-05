@@ -358,6 +358,94 @@ def all_pokemon():
             'pokemon': pokemon
         })
 
+@app.route('/pokemon', methods=['POST'])
+def get_pokemon():
+    data = request.get_json()
+    id = data['id']
+    cur.execute('''
+            SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, STRING_AGG(Move.moveName, ', ' ORDER BY Move.moveName) 
+                FROM (
+                (
+                    Pokemon
+                    JOIN
+                    CanLearnMove
+                    ON id=pid
+                )
+                JOIN 
+                Move
+                ON Move.moveName = CanLearnMove.moveName
+            )
+            WHERE
+            (id={0})
+            GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+            ORDER BY id
+            '''.format(id)
+            )
+    pokemon = [[
+                {
+                    'id': id,
+                    'name': name,
+                    'types': (type1, type2) if type2 else (type1,),
+                    'colors': (get_color_by_type(type1),get_color_by_type(type2)) if type2 else (get_color_by_type(type1),),
+                    'hp': baseHp,
+                    'spd': baseSpd,
+                    'atk': baseAtk,
+                    'def': baseDef,
+                    'spAtk': baseSpAtk,
+                    'spDef': baseSpDef,
+                    'moves': moves
+                }
+                for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, moves in cur
+        ],]
+    cur.execute('''
+            WITH RECURSIVE
+            Evolution(evolvesFrom, evolvesInto) AS (
+                (
+                    SELECT evolvesFromId, id FROM Pokemon
+                )
+                UNION
+                (
+                    SELECT e1.evolvesFrom, id
+                    FROM Evolution e1, Pokemon p
+                    WHERE e1.evolvesInto = p.evolvesFromId
+                )
+            )
+            SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, evolvesFromId FROM Pokemon
+            WHERE id IN (
+                SELECT evolvesInto
+                FROM Evolution
+                WHERE evolvesFrom = {0}
+            )
+            '''.format(id)
+            )
+    evolutions = [[
+                {
+                    'id': id,
+                    'name': name,
+                    'types': (type1, type2) if type2 else (type1,),
+                    'colors': (get_color_by_type(type1),get_color_by_type(type2)) if type2 else (get_color_by_type(type1),),
+                    'hp': baseHp,
+                    'spd': baseSpd,
+                    'atk': baseAtk,
+                    'def': baseDef,
+                    'spAtk': baseSpAtk,
+                    'spDef': baseSpDef,
+                    'evolvesFromId': evolvesFromId
+                }
+                for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, evolvesFromId in cur
+        ],]
+    idToName = dict()
+    idToName[int(id)] = pokemon[0][0]['name']
+    for d in evolutions[0]:
+        idToName[d['id']] = d['name']
+    for d in evolutions[0]:
+        d['evolvesFromName'] = idToName[d['evolvesFromId']]
+    return jsonify({
+        'status': 'success',
+        'pokemon': pokemon,
+        'evolutions': evolutions,
+    })
+
 # This route is for feature 2 (recursive query)
 @app.route('/evolutions', methods=['POST'])
 def get_evolutions():
