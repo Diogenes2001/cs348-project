@@ -53,6 +53,20 @@ We support the following functionalities:
 
 The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `Login.vue`, `Signup.vue`, `ChangePassword.vue` and `Delete.vue`.
 
+### **Program-Generated Teams**
+
+We support the following functionality:
+- We will generate up to 5 program-generated teams of 6 Pokemon, selecting each Pokemon greedily based on highest sum of percentages that each pair of Pokemon are matched up, while restricting that Pokemon must have different types
+- We also allow users to filter on teams containing a specific Pokemon
+- Only images of Pokemon are shown, but if you hover over the Pokemon image, the name appears in a popup
+
+### **User-Generated Teams**
+
+We support the following functionality:
+- We will return up to 5 user-generated teams of 6 Pokemon with top win rate and at least 2 games played
+- We also allow users to filter on teams containing a specific Pokemon
+- Only images of Pokemon are shown, but if you hover over the Pokemon image, the name appears in a popup
+
 ## References:
 
 Sort of followed this tutorial: https://testdriven.io/blog/developing-a-single-page-app-with-flask-and-vuejs/

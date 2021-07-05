@@ -394,6 +394,263 @@ def get_evolutions():
         'pokemon': [POKEMON[0],],
     })
 
+@app.route('/program_generated_teams', methods=['POST'])
+def program_generated_teams():
+    data = request.get_json()
+    pokemonNameFilter = data['pokemonNameFilter']
+    nameCond = f"WHERE LOWER(Pokemon1.name) = LOWER('{pokemonNameFilter}')" if pokemonNameFilter else ""
+    idCond = "" if pokemonNameFilter else "AND Pokemon1.id < Pokemon2.id"
+
+    cur.execute(f'''
+        SELECT
+            p1id,
+            p1name,
+            p2id,
+            p2name,
+            p3id,
+            p3name,
+            p4id,
+            p4name,
+            p5id,
+            p5name,
+            Pokemon6.id as p6id,
+            Pokemon6.name as p6name
+        FROM
+            (SELECT
+                p1id,
+                p1name,
+                p1type,
+                p2id,
+                p2name,
+                p2type,
+                p3id,
+                p3name,
+                p3type,
+                p4id,
+                p4name,
+                p4type,
+                Pokemon5.id as p5id,
+                Pokemon5.name as p5name,
+                Pokemon5.type1 as p5type
+            FROM
+                (SELECT
+                    p1id,
+                    p1name,
+                    p1type,
+                    p2id,
+                    p2name,
+                    p2type,
+                    p3id,
+                    p3name,
+                    p3type,
+                    Pokemon4.id as p4id,
+                    Pokemon4.name as p4name,
+                    Pokemon4.type1 as p4type
+                FROM
+                    (SELECT
+                        p1id,
+                        p1name,
+                        p1type,
+                        p2id,
+                        p2name,
+                        p2type,
+                        Pokemon3.id as p3id,
+                        Pokemon3.name as p3name,
+                        Pokemon3.type1 as p3type
+                    FROM
+                        (SELECT
+                            Pokemon1.id as p1id,
+                            Pokemon1.name as p1name,
+                            Pokemon1.type1 as p1type,
+                            Pokemon2.id as p2id,
+                            Pokemon2.name as p2name,
+                            Pokemon2.type1 as p2type
+                        FROM Pokemon as Pokemon1
+                        INNER JOIN Pokemon as Pokemon2
+                            ON Pokemon1.id <> Pokemon2.id
+                            {idCond}
+                            AND Pokemon1.type1 <> Pokemon2.type1
+                        LEFT JOIN PokemonPairings as Pokemon12
+                            ON 	Pokemon12.pid1 = Pokemon1.id
+                            AND	Pokemon12.pid2 = Pokemon2.id
+                        {nameCond}
+                        ORDER BY
+                            COALESCE(Pokemon12.percentage, 0) DESC
+                        LIMIT 1000) as Pokemon12
+                    INNER JOIN Pokemon as Pokemon3
+                        ON  p1id <> Pokemon3.id
+                        AND	p2id < Pokemon3.id
+                        AND p1type <> Pokemon3.type1
+                        AND p2type <> Pokemon3.type1
+                    LEFT JOIN PokemonPairings as Pokemon13
+                        ON 	Pokemon13.pid1 = p1id
+                        AND	Pokemon13.pid2 = Pokemon3.id
+                    LEFT JOIN PokemonPairings as Pokemon23
+                        ON 	Pokemon23.pid1 = p2id
+                        AND Pokemon23.pid2 = Pokemon3.id
+                    ORDER BY
+                        COALESCE(Pokemon13.percentage, 0) +
+                        COALESCE(Pokemon23.percentage, 0) DESC
+                    LIMIT 1000) as Pokemon123
+                INNER JOIN Pokemon as Pokemon4
+                    ON  p1id <> Pokemon4.id
+                    AND p3id < Pokemon4.id
+                    AND p1type <> Pokemon4.type1
+                    AND p2type <> Pokemon4.type1
+                    AND p3type <> Pokemon4.type1
+                LEFT JOIN PokemonPairings as Pokemon14
+                    ON 	Pokemon14.pid1 = p1id
+                    AND	Pokemon14.pid2 = Pokemon4.id
+                LEFT JOIN PokemonPairings as Pokemon24
+                    ON 	Pokemon24.pid1 = p2id
+                    AND	Pokemon24.pid2 = Pokemon4.id
+                LEFT JOIN PokemonPairings as Pokemon34
+                    ON 	Pokemon34.pid1 = p3id
+                    AND	Pokemon34.pid2 = Pokemon4.id
+                ORDER BY
+                    COALESCE(Pokemon14.percentage, 0) +
+                    COALESCE(Pokemon24.percentage, 0) +
+                    COALESCE(Pokemon34.percentage, 0) DESC
+                LIMIT 1000) as Pokemon1234
+            INNER JOIN Pokemon as Pokemon5
+                ON  p1id <> Pokemon5.id
+                AND p4id < Pokemon5.id
+                AND p1type <> Pokemon5.type1
+                AND p2type <> Pokemon5.type1
+                AND p3type <> Pokemon5.type1
+                AND p4type <> Pokemon5.type1
+            LEFT JOIN PokemonPairings as Pokemon15
+                ON 	Pokemon15.pid1 = p1id
+                AND	Pokemon15.pid2 = Pokemon5.id
+            LEFT JOIN PokemonPairings as Pokemon25
+                ON 	Pokemon25.pid1 = p2id
+                AND	Pokemon25.pid2 = Pokemon5.id
+            LEFT JOIN PokemonPairings as Pokemon35
+                ON 	Pokemon35.pid1 = p3id
+                AND	Pokemon35.pid2 = Pokemon5.id
+            LEFT JOIN PokemonPairings as Pokemon45
+                ON 	Pokemon45.pid1 = p4id
+                AND	Pokemon45.pid2 = Pokemon5.id
+            ORDER BY
+                COALESCE(Pokemon15.percentage, 0) +
+                COALESCE(Pokemon25.percentage, 0) +
+                COALESCE(Pokemon35.percentage, 0) +
+                COALESCE(Pokemon45.percentage, 0) DESC
+            LIMIT 1000) as Pokemon12345
+        INNER JOIN Pokemon as Pokemon6
+            ON  p1id <> Pokemon6.id
+            AND p5id < Pokemon6.id
+            AND p1type <> Pokemon6.type1
+            AND p2type <> Pokemon6.type1
+            AND p3type <> Pokemon6.type1
+            AND p4type <> Pokemon6.type1
+            AND p5type <> Pokemon6.type1
+        LEFT JOIN PokemonPairings as Pokemon16
+            ON 	Pokemon16.pid1 = p1id
+            AND	Pokemon16.pid2 = Pokemon6.id
+        LEFT JOIN PokemonPairings as Pokemon26
+            ON 	Pokemon26.pid1 = p2id
+            AND	Pokemon26.pid2 = Pokemon6.id
+        LEFT JOIN PokemonPairings as Pokemon36
+            ON 	Pokemon36.pid1 = p3id
+            AND	Pokemon36.pid2 = Pokemon6.id
+        LEFT JOIN PokemonPairings as Pokemon46
+            ON 	Pokemon46.pid1 = p4id
+            AND	Pokemon46.pid2 = Pokemon6.id
+        LEFT JOIN PokemonPairings as Pokemon56
+            ON 	Pokemon56.pid1 = p5id
+            AND	Pokemon56.pid2 = Pokemon6.id
+        ORDER BY
+            COALESCE(Pokemon16.percentage, 0) +
+            COALESCE(Pokemon26.percentage, 0) +
+            COALESCE(Pokemon36.percentage, 0) +
+            COALESCE(Pokemon46.percentage, 0) +
+            COALESCE(Pokemon56.percentage, 0) DESC
+        LIMIT 5''')
+    tups = cur.fetchall()
+
+    return jsonify({
+        'status': 'success',
+        'teams': [[[tup[0], tup[1]],
+                   [tup[2], tup[3]],
+                   [tup[4], tup[5]],
+                   [tup[6], tup[7]],
+                   [tup[8], tup[9]],
+                   [tup[10], tup[11]]] for tup in tups]
+    })
+
+@app.route('/user_generated_teams', methods=['POST'])
+def user_generated_teams():
+    data = request.get_json()
+    pokemonNameFilter = data['pokemonNameFilter']
+    nameCond = lambda isWhere, field, last: (("AND (" if isWhere else "OR") + f" LOWER({field}) = LOWER('{pokemonNameFilter}')" + (")" if last else "")) if pokemonNameFilter else ""
+
+    cur.execute(f'''
+        SELECT pid1,
+               Pokemon1.name,
+               pid2,
+               Pokemon2.name,
+               pid3,
+               Pokemon3.name,
+               pid4,
+               Pokemon4.name,
+               pid5,
+               Pokemon5.name,
+               pid6,
+               Pokemon6.name
+        FROM Team
+        INNER JOIN Pokemon as Pokemon1
+        ON pid1 = Pokemon1.id
+        INNER JOIN Pokemon as Pokemon2
+        ON pid2 = Pokemon2.id
+        INNER JOIN Pokemon as Pokemon3
+        ON pid3 = Pokemon3.id
+        INNER JOIN Pokemon as Pokemon4
+        ON pid4 = Pokemon4.id
+        INNER JOIN Pokemon as Pokemon5
+        ON pid5 = Pokemon5.id
+        INNER JOIN Pokemon as Pokemon6
+        ON pid6 = Pokemon6.id
+        WHERE wins + losses >= 2
+        {nameCond(True, 'Pokemon1.name', False)}
+        {nameCond(False, 'Pokemon2.name', False)}
+        {nameCond(False, 'Pokemon3.name', False)}
+        {nameCond(False, 'Pokemon4.name', False)}
+        {nameCond(False, 'Pokemon5.name', False)}
+        {nameCond(False, 'Pokemon6.name', True)}
+        ORDER BY CAST(wins AS FLOAT) / CAST(wins + losses AS FLOAT) DESC
+        LIMIT 5''')
+    tups = cur.fetchall()
+
+    for i in range(len(tups)):
+        if pokemonNameFilter:
+            tups[i] = list(tups[i])
+            if tups[i][3] == pokemonNameFilter:
+                tups[i][0], tups[i][2] = tups[i][2], tups[i][0]
+                tups[i][1], tups[i][3] = tups[i][3], tups[i][1]
+            elif tups[i][5] == pokemonNameFilter:
+                tups[i][0], tups[i][4] = tups[i][4], tups[i][0]
+                tups[i][1], tups[i][5] = tups[i][5], tups[i][1]
+            elif tups[i][7] == pokemonNameFilter:
+                tups[i][0], tups[i][6] = tups[i][6], tups[i][0]
+                tups[i][1], tups[i][7] = tups[i][7], tups[i][1]
+            elif tups[i][9] == pokemonNameFilter:
+                tups[i][0], tups[i][8] = tups[i][8], tups[i][0]
+                tups[i][1], tups[i][9] = tups[i][9], tups[i][1]
+            elif tups[i][11] == pokemonNameFilter:
+                tups[i][0], tups[i][10] = tups[i][10], tups[i][0]
+                tups[i][1], tups[i][11] = tups[i][11], tups[i][1]
+
+    return jsonify({
+        'status': 'success',
+        'teams': [[[tup[0], tup[1]],
+                   [tup[2], tup[3]],
+                   [tup[4], tup[5]],
+                   [tup[6], tup[7]],
+                   [tup[8], tup[9]],
+                   [tup[10], tup[11]]] for tup in tups]
+    })
+
 # sanity check route
 @app.route('/ping', methods=['GET'])
 def ping_pong():

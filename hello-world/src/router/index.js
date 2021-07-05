@@ -8,6 +8,7 @@ import Login from '../components/Login.vue'
 import Signup from '../components/Signup.vue'
 import ChangePassword from '../components/ChangePassword.vue'
 import Delete from '../components/Delete.vue'
+import TeamGeneration from '../components/TeamGeneration.vue'
 
 Vue.component('myHeader', myHeader);
 Vue.component('profile', Profile);
@@ -51,6 +52,11 @@ export default new Router({
       path: '/delete',
       name: 'Delete account',
       component: Delete
+    },
+    {
+      path: '/teams',
+      name: 'Generate Teams',
+      component: TeamGeneration
     }
   ]
 })

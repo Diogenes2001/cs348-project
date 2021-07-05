@@ -8,6 +8,7 @@
 
       <b-navbar-nav class="ml-auto">
         <b-nav-item href="/">Pok&eacute;dex</b-nav-item>
+        <b-nav-item href="/teams">Teams</b-nav-item>
         <b-nav-item href="/ownedpokemon" v-show="this.username">My Pokemon</b-nav-item>
         <b-nav-item v-show="this.username == null" href="/login">Login</b-nav-item>
         <b-nav-item-dropdown v-show="this.username" :text="this.username" right>
