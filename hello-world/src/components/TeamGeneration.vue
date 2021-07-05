@@ -77,9 +77,9 @@ export default {
                 const params = this.getParams();
                 this.getTeams(true, params, (response) => {
                     this.programGeneratedTeams = response;
-                });
-                this.getTeams(false, params, (response) => {
-                    this.userGeneratedTeams = response;
+                    this.getTeams(false, params, (response) => {
+                        this.userGeneratedTeams = response;
+                    });
                 });
             },
             onSubmit(event) {
