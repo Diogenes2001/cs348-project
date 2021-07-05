@@ -4,8 +4,9 @@
 
 SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
 FROM Pokemon
-WHERE name LIKE '%Char%' AND baseHp >= 30 
-AND (ability1 LIKE '%Blaze%' OR ability2 LIKE '%Blaze%');
+WHERE name ILIKE '%char%' AND baseHp >= 30 
+AND (type1 = 'Fire' OR type2 = 'Fire')
+ORDER BY id;
 
 -- Example with move querying
 
@@ -21,8 +22,9 @@ SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1,
 	ON Move.moveName = CanLearnMove.moveName
 )
 WHERE
-(type1 = 'Grass' OR type2 = 'Grass') AND accuracy >= 90 AND moveType = 'Grass'
-GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2;
+(type1 = 'Ground' OR type2 = 'Ground') AND Move.moveName ILIKE '%Draco Meteor%'
+GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+ORDER BY id;
 
 ----------------------------------------------------
 -- FEATURE 2
@@ -43,7 +45,7 @@ SELECT * FROM Pokemon
 WHERE id IN (
 	SELECT evolvesInto
 	FROM Evolution
-	WHERE evolvesFrom = (SELECT id FROM Pokemon WHERE name='Ralts')
+	WHERE evolvesFrom = 280
 );
 
 ----------------------------------------------------

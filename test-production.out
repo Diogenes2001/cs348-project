@@ -2,21 +2,25 @@ Feature 1:
 
 Example without move search:
 
- id |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
-----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
-  4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
-  5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
-  6 | Charizard  |     78 |     100 |     104 |      78 |       159 |       115 | Fire  | Flying
+ id  |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
+-----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
+   4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
+   5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
+   6 | Charizard  |     78 |     100 |      84 |      78 |       109 |        85 | Fire  | Flying
+ 390 | Chimchar   |     44 |      61 |      58 |      44 |        58 |        44 | Fire  |
 (3 rows)
 
 Example with move search:
 
- id |   name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2  |       string_agg
-----+-----------+--------+---------+---------+---------+-----------+-----------+-------+--------+------------------------
-  1 | Bulbasaur |     45 |      45 |      49 |      49 |        65 |        65 | Grass | Poison | Razor Leaf
-  2 | Ivysaur   |     60 |      60 |      62 |      63 |        80 |        80 | Grass | Poison | Razor Leaf, Solar Beam
-  3 | Venusaur  |     80 |      80 |     100 |     123 |       122 |       120 | Grass | Poison | Razor Leaf, Solar Beam
-(3 rows)
+ id  |   name   | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1  | type2  |  string_agg
+-----+----------+--------+---------+---------+---------+-----------+-----------+--------+--------+--------------
+ 329 | Vibrava  |     50 |      70 |      70 |      50 |        50 |        50 | Ground | Dragon | Draco Meteor
+ 330 | Flygon   |     80 |     100 |     100 |      80 |        80 |        80 | Ground | Dragon | Draco Meteor
+ 443 | Gible    |     58 |      42 |      70 |      45 |        40 |        45 | Dragon | Ground | Draco Meteor
+ 444 | Gabite   |     68 |      82 |      90 |      65 |        50 |        55 | Dragon | Ground | Draco Meteor
+ 445 | Garchomp |    108 |     102 |     130 |      95 |        80 |        85 | Dragon | Ground | Draco Meteor
+ 718 | Zygarde  |    108 |      95 |     100 |     121 |        81 |        95 | Dragon | Ground | Draco Meteor
+(6 rows)
 
 
 Feature 2:
