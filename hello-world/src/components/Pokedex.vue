@@ -102,7 +102,9 @@
   <div>
   <b-container class="bv-example-row">
     <h1>Pok&eacute;dex</h1>
-    <hr><br>
+    <hr>
+    <h4>Click on a Pok&eacute;mon's image to learn more.</h4>
+    <br>
     <b-row v-for="(row, index) in pokemon" :key="index">
       <b-col v-for="(mon, index) in row" :key="index">
       <profile

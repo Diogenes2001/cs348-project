@@ -1,9 +1,11 @@
 <template>
-<b-container href="'/pokemon/' + id">
+<b-container>
 
 <!-- NAME, IMAGE, TYPE -->
 <h3>{{ id }}: {{ pokemon }}</h3>
-<b-img center v-bind:src="require(`@/assets/pokemon/${id}.png`)" v-bind:alt="pokemon" width="200%" height="200%" />
+<a v-bind:href="'/pokemon/'+ id">
+  <b-img center v-bind:src="require(`@/assets/pokemon/${id}.png`)" v-bind:alt="pokemon" width="200%" height="200%"/>
+</a>
 <b-row class="justify-content-md-center">
   <b-col v-for="(type, index) in types" :key="index" md="auto">
 

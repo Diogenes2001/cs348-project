@@ -20,7 +20,7 @@
   <b-container class="bv-example-row">
     <h1>Evolutions</h1>
     <hr>
-    <div>{{ doesNotEvolveMsg }}</div>
+    <h4>{{ msg }}</h4>
     <br>
     <b-row v-for="(row, index) in evolutions" :key="index">
       <b-col v-for="(mon, index) in row" :key="index">
@@ -56,7 +56,7 @@ export default {
         pokemon: [],
         pokemonId: null,
         evolutions: [],
-        doesNotEvolveMsg: ""
+        msg: "Click on a Pokémon's image to learn more."
       };
     },
     methods: {
@@ -69,7 +69,7 @@ export default {
             this.evolutions = res.data.evolutions;
             console.log(this.evolutions)
             if(this.evolutions[0].length == 0){
-              this.doesNotEvolveMsg = "This Pokemon does not evolve."
+              this.msg = "This Pokemon does not evolve."
             }
             console.log(res.data.message);
           })
