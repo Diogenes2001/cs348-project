@@ -16,10 +16,12 @@
     <hr><br>
     <b-row v-for="(team, index) in programGeneratedTeams" :key="index">
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
-            <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`program-${index}-${index2}`" />
-            <b-popover :target="`program-${index}-${index2}`" triggers="hover" placement="bottom">
-                {{pokemon[1]}}
-            </b-popover>
+            <a v-bind:href="'/pokemon/'+ pokemon[0]">
+                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`program-${index}-${index2}`" />
+                <b-popover :target="`program-${index}-${index2}`" triggers="hover" placement="bottom">
+                    {{pokemon[1]}}
+                </b-popover>
+            </a>
         </b-col>
     </b-row>
     </b-container>
@@ -31,10 +33,12 @@
     <hr><br>
     <b-row v-for="(team, index) in userGeneratedTeams" :key="index">
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
-            <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`user-${index}-${index2}`" />
-            <b-popover :target="`user-${index}-${index2}`" triggers="hover" placement="bottom">
-                {{pokemon[1]}}
-            </b-popover>
+            <a v-bind:href="'/pokemon/'+ pokemon[0]">
+                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`user-${index}-${index2}`" />
+                <b-popover :target="`user-${index}-${index2}`" triggers="hover" placement="bottom">
+                    {{pokemon[1]}}
+                </b-popover>
+            </a>
         </b-col>
     </b-row>
     </b-container>
