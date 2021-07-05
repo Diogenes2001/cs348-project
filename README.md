@@ -21,12 +21,15 @@ Then, sample data can be inserted using
 ```
 dummy-data.sql
 ```
-Alternatively, the production data can be inserted using 
+Alternatively, the production data can be inserted via 
 ```
 cd imports
 python import_data.py
 python generate_user_pokemon.py
-cd ../image_scraping
+```
+Since there is a limit on the file size for submission, the image for each Pokemon has to be scraped before the app can be used using
+```
+cd image_scraping
 python image_scraper.py
 ```
 The image scraper is expected to take some time. Some pictures already have been downloaded manually, as the scraper has trouble scraping them.
