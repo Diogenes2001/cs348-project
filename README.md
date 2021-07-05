@@ -26,7 +26,10 @@ Alternatively, the production data can be inserted using
 cd imports
 python import_data.py
 python generate_user_pokemon.py
+cd ../image_scraping
+python image_scraper.py
 ```
+The image scraper is expected to take some time. Some pictures already have been downloaded manually, as the scraper has trouble scraping them.
 
 ## Running the app:
 
