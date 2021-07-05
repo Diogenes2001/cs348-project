@@ -33,6 +33,8 @@ CREATE TABLE Pokemon(
     isMythical BOOLEAN NOT NULL
 );
 
+CREATE INDEX typeIndex ON Pokemon(type1);
+
 CREATE TABLE PokemonPairings(
     pid1 INTEGER NOT NULL REFERENCES Pokemon(id),
     pid2 INTEGER NOT NULL REFERENCES Pokemon(id),
