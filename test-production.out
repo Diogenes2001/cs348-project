@@ -132,12 +132,12 @@ Feature 6:
 
 No filters:
 
- pid1 |   name    | pid2 |    name    | pid3 |    name    | pid4 |    name    | pid5 |    name     | pid6 |   name    
+ pid1 |   name    | pid2 |    name    | pid3 |    name    | pid4 |    name    | pid5 |    name     | pid6 |   name
 ------+-----------+------+------------+------+------------+------+------------+------+-------------+------+-----------
-    6 | Charizard |   38 | Ninetales  |   71 | Victreebel |  189 | Jumpluff   |  324 | Torkoal     |  586 | Sawsbuck
   248 | Tyranitar |  598 | Ferrothorn |  785 | Tapu Koko  |  798 | Kartana    |  806 | Blacephalon |  892 | Urshifu
-    3 | Venusaur  |   36 | Clefable   |  530 | Excadrill  |  681 | Aegislash  |  784 | Kommo-o     |  892 | Urshifu
+    6 | Charizard |   38 | Ninetales  |   71 | Victreebel |  189 | Jumpluff   |  324 | Torkoal     |  586 | Sawsbuck
    50 | Diglett   |  177 | Natu       |  240 | Magby      |  559 | Scraggy    |  629 | Vullaby     |  696 | Tyrunt
+    3 | Venusaur  |   36 | Clefable   |  530 | Excadrill  |  681 | Aegislash  |  784 | Kommo-o     |  892 | Urshifu
   105 | Marowak   |  350 | Milotic    |  468 | Togekiss   |  576 | Gothitelle |  632 | Durant      |  812 | Rillaboom
 (5 rows)
 
