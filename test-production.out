@@ -106,31 +106,48 @@ After example deletion:
 
 Feature 5:
 
- pid1 | pid2 | pid3 | pid4 | pid5 | pid6
-------+------+------+------+------+------
-    3 |    6 |    9 |  281 |  282 |  475
-    3 |    6 |    9 |  280 |  282 |  475
-    3 |    5 |    9 |  280 |  282 |  475
-    3 |    4 |    9 |  280 |  282 |  475
-    3 |    5 |    9 |  281 |  282 |  475
+No filters:
+
+ p1id |  p1name  | p2id |  p2name  | p3id | p3name  | p4id |   p4name   | p5id |   p5name   | p6id |   p6name    
+------+----------+------+----------+------+---------+------+------------+------+------------+------+-------------
+   91 | Cloyster |  445 | Garchomp |  558 | Crustle |  625 | Bisharp    |  689 | Barbaracle |  776 | Turtonator
+   91 | Cloyster |  151 | Mew      |  558 | Crustle |  625 | Bisharp    |  689 | Barbaracle |  776 | Turtonator
+   91 | Cloyster |  196 | Espeon   |  558 | Crustle |  689 | Barbaracle |  776 | Turtonator |  855 | Polteageist
+   36 | Clefable |  113 | Chansey  |  334 | Altaria |  618 | Stunfisk   |  748 | Toxapex    |  771 | Pyukumuku
+   36 | Clefable |  292 | Shedinja |  334 | Altaria |  748 | Toxapex    |  771 | Pyukumuku  |  823 | Corviknight
 (5 rows)
 
+Filter teams with Charizard:
+
+ p1id |  p1name   | p2id |  p2name  | p3id |  p3name  | p4id | p4name  | p5id |  p5name   | p6id |   p6name    
+------+-----------+------+----------+------+----------+------+---------+------+-----------+------+-------------
+    6 | Charizard |   36 | Clefable |  113 | Chansey  |  334 | Altaria |  618 | Stunfisk  |  771 | Pyukumuku
+    6 | Charizard |   36 | Clefable |  292 | Shedinja |  334 | Altaria |  771 | Pyukumuku |  823 | Corviknight
+    6 | Charizard |   36 | Clefable |  334 | Altaria  |  748 | Toxapex |  771 | Pyukumuku |  823 | Corviknight
+    6 | Charizard |   36 | Clefable |  292 | Shedinja |  334 | Altaria |  748 | Toxapex   |  823 | Corviknight
+    6 | Charizard |   36 | Clefable |  292 | Shedinja |  748 | Toxapex |  771 | Pyukumuku |  823 | Corviknight
+(5 rows)
 
 Feature 6:
 
-Fetching from the cursor:
+No filters:
 
- teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
---------+------+------+------+------+------+------+---------+------+--------
-      2 |    2 |    3 |    4 |    5 |    6 |    9 |       2 |    6 |      2
-(1 row)
+ pid1 |   name    | pid2 |    name    | pid3 |    name    | pid4 |    name    | pid5 |    name     | pid6 |   name    
+------+-----------+------+------------+------+------------+------+------------+------+-------------+------+-----------
+    6 | Charizard |   38 | Ninetales  |   71 | Victreebel |  189 | Jumpluff   |  324 | Torkoal     |  586 | Sawsbuck
+  248 | Tyranitar |  598 | Ferrothorn |  785 | Tapu Koko  |  798 | Kartana    |  806 | Blacephalon |  892 | Urshifu
+    3 | Venusaur  |   36 | Clefable   |  530 | Excadrill  |  681 | Aegislash  |  784 | Kommo-o     |  892 | Urshifu
+   50 | Diglett   |  177 | Natu       |  240 | Magby      |  559 | Scraggy    |  629 | Vullaby     |  696 | Tyrunt
+  105 | Marowak   |  350 | Milotic    |  468 | Togekiss   |  576 | Gothitelle |  632 | Durant      |  812 | Rillaboom
+(5 rows)
 
- teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
---------+------+------+------+------+------+------+---------+------+--------
-      3 |    3 |    5 |    6 |    7 |    8 |    9 |       3 |   10 |      5
-(1 row)
+Filter teams with Charizard:
 
- teamid | pid1 | pid2 | pid3 | pid4 | pid5 | pid6 | starter | wins | losses
---------+------+------+------+------+------+------+---------+------+--------
-      1 |    1 |    2 |    3 |    4 |    5 |    6 |       1 |    1 |      1
-(1 row)
+ pid1 |   name    | pid2 |   name    | pid3 |    name    | pid4 |   name    | pid5 |    name    | pid6 |   name   
+------+-----------+------+-----------+------+------------+------+-----------+------+------------+------+----------
+    6 | Charizard |  230 | Kingdra   |  308 | Medicham   |  468 | Togekiss  |  596 | Galvantula |  701 | Hawlucha
+    6 | Charizard |  248 | Tyranitar |  350 | Milotic    |  421 | Cherrim   |  452 | Drapion    |  748 | Toxapex
+    6 | Charizard |   38 | Ninetales |   71 | Victreebel |  189 | Jumpluff  |  324 | Torkoal    |  586 | Sawsbuck
+    6 | Charizard |  199 | Slowking  |  442 | Spiritomb  |  646 | Kyurem    |  888 | Zacian     |  892 | Urshifu
+    6 | Charizard |  350 | Milotic   |  462 | Magnezone  |  464 | Rhyperior |  468 | Togekiss   |  640 | Virizion
+(5 rows)
