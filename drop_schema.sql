@@ -4,6 +4,7 @@ DROP TABLE Effectiveness;
 DROP TABLE PokemonPairings;
 DROP TABLE Team;
 DROP TABLE CanLearnMove;
+DROP INDEX typeIndex;
 DROP TABLE Pokemon;
 DROP TABLE Move;
 DROP TABLE "Type";
