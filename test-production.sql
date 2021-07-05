@@ -4,8 +4,9 @@
 
 SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
 FROM Pokemon
-WHERE name LIKE '%Char%' AND baseHp >= 30 
-AND (ability1 LIKE '%Blaze%' OR ability2 LIKE '%Blaze%');
+WHERE name ILIKE '%char%' AND baseHp >= 30 
+AND (type1 = 'Fire' OR type2 = 'Fire')
+ORDER BY id;
 
 -- Example with move querying
 
@@ -22,7 +23,8 @@ SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1,
 )
 WHERE
 (type1 = 'Ground' OR type2 = 'Ground') AND Move.moveName = 'Draco Meteor'
-GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2;
+GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
+ORDER BY id;
 
 ----------------------------------------------------
 -- FEATURE 2

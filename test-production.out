@@ -2,11 +2,12 @@ Feature 1:
 
 Example without move search:
 
- id |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
-----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
-  4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
-  5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
-  6 | Charizard  |     78 |     100 |      84 |      78 |       109 |        85 | Fire  | Flying
+ id  |    name    | basehp | basespd | baseatk | basedef | basespatk | basespdef | type1 | type2
+-----+------------+--------+---------+---------+---------+-----------+-----------+-------+--------
+   4 | Charmander |     39 |      65 |      52 |      43 |        60 |        50 | Fire  |
+   5 | Charmeleon |     58 |      80 |      64 |      58 |        80 |        65 | Fire  |
+   6 | Charizard  |     78 |     100 |      84 |      78 |       109 |        85 | Fire  | Flying
+ 390 | Chimchar   |     44 |      61 |      58 |      44 |        58 |        44 | Fire  |
 (3 rows)
 
 Example with move search:
