@@ -60,7 +60,7 @@ We support the following functionalities:
 - We also allow users to filter on teams containing a specific Pokemon
 - Only images of Pokemon are shown, but if you hover over the Pokemon image, the name appears in a popup
 
-The backend is in `app.py` (POST /program\_generated\_teams). The frontend is in `TeamGeneration.vue` of the `hello-world/src/components` folder.
+The backend is in `app.py` (`POST /program\_generated\_teams`). The frontend is in `TeamGeneration.vue` of the `hello-world/src/components` folder.
 
 ### **User-Generated Teams**
 
@@ -69,7 +69,7 @@ We support the following functionalities:
 - We also allow users to filter on teams containing a specific Pokemon
 - Only images of Pokemon are shown, but if you hover over the Pokemon image, the name appears in a popup
 
-The backend is in `app.py` (POST /user\_generated\_teams). The frontend is in `TeamGeneration.vue` of the `hello-world/src/components` folder.
+The backend is in `app.py` (`POST /user\_generated\_teams`). The frontend is in `TeamGeneration.vue` of the `hello-world/src/components` folder.
 
 ## References:
 
