@@ -469,6 +469,7 @@ WHERE wins + losses >= 2
 ORDER BY CAST(wins AS FLOAT) / CAST(wins + losses AS FLOAT) DESC
 LIMIT 5;
 
+-- Filter teams with Charizard
 SELECT pid1,
        Pokemon1.name,
        pid2,
