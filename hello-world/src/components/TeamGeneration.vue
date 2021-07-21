@@ -21,7 +21,9 @@
         <b-col cols="0.1" :style="'color: DarkGray'">{{ index + 1 }}</b-col>
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
             <a v-bind:href="'/pokemon/'+ pokemon[0]">
-                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`program-${index}-${index2}`" />
+                <div class="bounce-container">
+                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`program-${index}-${index2}`" class="image-style bounce-item"/>
+                </div>
                 <b-popover :target="`program-${index}-${index2}`" triggers="hover" placement="bottom">
                     {{pokemon[1]}}
                 </b-popover>
@@ -40,7 +42,9 @@
         <b-col cols="0.1" :style="'color: DarkGray'">{{ index + 1 }}</b-col>
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
             <a v-bind:href="'/pokemon/'+ pokemon[0]">
-                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`user-${index}-${index2}`" />
+                <div class="bounce-container">
+                <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`user-${index}-${index2}`" class="bounce-item"/>
+                </div>
                 <b-popover :target="`user-${index}-${index2}`" triggers="hover" placement="bottom">
                     {{pokemon[1]}}
                 </b-popover>
@@ -109,5 +113,31 @@ export default {
   margin-bottom: 2rem !important;
   background: WhiteSmoke;
   border-radius: 25px;
+}
+.image-style {
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+.bounce-item {
+    align-self: flex-end;
+    animation-duration: 0.5s;
+    animation-iteration-count: once;
+    animation-fill-mode: both;
+    transform-origin: bottom;
+}
+.bounce-item:hover {
+    animation-name: bounce;
+    animation-timing-function: ease;
+}
+.bounce-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+@keyframes bounce {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
 }
 </style>
