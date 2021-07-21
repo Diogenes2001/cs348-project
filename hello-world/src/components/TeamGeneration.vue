@@ -16,6 +16,7 @@
     <b-container class="bv-example-row">
     <h1>Our Team Picks</h1>
     <hr><br>
+    <b-row v-if="programGeneratedTeams.length == 0" align-h="center">(No Teams Found &#9785;)</b-row>
     <b-row v-for="(team, index) in programGeneratedTeams" :key="index" align-h="center" class="row-style">
         <b-col cols="0.1" :style="'color: DarkGray'">{{ index + 1 }}</b-col>
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
@@ -34,8 +35,9 @@
     <b-container class="bv-example-row">
     <h1>Users' Team Picks</h1>
     <hr><br>
-    <b-row v-if="userGeneratedTeams.length == 0" align-h="center">(No Teams &#9785;)</b-row>
-    <b-row v-for="(team, index) in userGeneratedTeams" :key="index">
+    <b-row v-if="userGeneratedTeams.length == 0" align-h="center">(No Teams Found &#9785;)</b-row>
+    <b-row v-for="(team, index) in userGeneratedTeams" :key="index" align-h="center" class="row-style">
+        <b-col cols="0.1" :style="'color: DarkGray'">{{ index + 1 }}</b-col>
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
             <a v-bind:href="'/pokemon/'+ pokemon[0]">
                 <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`user-${index}-${index2}`" />
