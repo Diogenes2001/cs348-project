@@ -1,10 +1,12 @@
 import json
 from flask import Flask, request, json, jsonify
+from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 import psycopg2
 import sys
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 # connect to the database
 conn = psycopg2.connect(host="localhost",
@@ -144,7 +146,7 @@ def try_deleteaccount():
     if tup is not None:
         passw = tup[0]
 
-        if passw == data['password']:
+        if bcrypt.check_password_hash(passw, data['password']):
 
             cur.execute('''DELETE FROM "User" WHERE username='{0}' '''.format(data['username']))
 
@@ -164,9 +166,10 @@ def try_changepass():
     if tup is not None:
         passw = tup[0]
 
-        if passw == data['curpass']:
+        if bcrypt.check_password_hash(passw, data['curpass']):
 
-            cur.execute('''UPDATE "User" SET password = '{0}' WHERE username='{1}' '''.format(data['newpass'], data['username']))
+            pw_hash = bcrypt.generate_password_hash(data['newpass']).decode('utf-8')
+            cur.execute('''UPDATE "User" SET password = '{0}' WHERE username='{1}' '''.format(pw_hash, data['username']))
 
             conn.commit()
 
@@ -183,8 +186,9 @@ def try_signup():
     tup = cur.fetchone()
     if tup is not None:
         return jsonify({ 'status': 'failure', 'error': 'Username is already taken.'})
-    
-    cur.execute('''INSERT INTO "User" VALUES ('{0}', '{1}', '{2}') '''.format(data['username'], data['email'], data['password']))
+
+    pw_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    cur.execute('''INSERT INTO "User" VALUES ('{0}', '{1}', '{2}') '''.format(data['username'], data['email'], pw_hash))
 
     conn.commit()
 
@@ -202,7 +206,7 @@ def try_login():
     if tup is not None:
         passw = tup[0]
 
-        if passw == data['password']:
+        if bcrypt.check_password_hash(passw, data['password']):
             return jsonify({
                 'status': 'success'
             })

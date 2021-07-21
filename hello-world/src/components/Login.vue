@@ -76,7 +76,6 @@ export default {
           password: this.form.password
         };
         var path = 'http://127.0.0.1:5000/login';
-        console.log(params);
         axios.post(path, params)
           .then((res) => {
             if (res.data.status == "failure") {

@@ -1,5 +1,10 @@
 import psycopg2
 import random
+from flask import Flask
+from flask_bcrypt import Bcrypt
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 conn = psycopg2.connect(host="localhost",
     database="Flask", user="postgres", password="password")
@@ -59,10 +64,14 @@ def createQuery(pid, user):
 def generateUserPokemon():
     # generate some users first
     try:
-        cur.execute('''INSERT INTO "User" VALUES ('user1', 'user1@gmail.com','pass1')''')
-        cur.execute('''INSERT INTO "User" VALUES ('user2', 'user2@gmail.com','pass2')''')
-        cur.execute('''INSERT INTO "User" VALUES ('user3', 'user3@gmail.com','pass3')''')
+        pw_hash1 = bcrypt.generate_password_hash('pass1').decode('utf-8')
+        cur.execute('''INSERT INTO "User" VALUES ('user1', 'user1@gmail.com','{0}')'''.format(pw_hash1))
+        pw_hash2 = bcrypt.generate_password_hash('pass2').decode('utf-8')
+        cur.execute('''INSERT INTO "User" VALUES ('user2', 'user2@gmail.com','{0}')'''.format(pw_hash2))
+        pw_hash3 = bcrypt.generate_password_hash('pass3').decode('utf-8')
+        cur.execute('''INSERT INTO "User" VALUES ('user3', 'user3@gmail.com','{0}')'''.format(pw_hash3))
         conn.commit()
+        print("Successfully created users!")
     except:
         conn.rollback()
 
@@ -88,6 +97,7 @@ def generateUserPokemon():
                 print("Failed to execute: " + query)
                 conn.rollback()
 
+    print("Successfully created user 1's Pokemon!")
     conn.commit()
 
     # user 2, generate 10 pokemon
@@ -102,6 +112,7 @@ def generateUserPokemon():
                 print("Failed to execute: " + query)
                 conn.rollback()
 
+    print("Successfully created user 2's Pokemon!")
     conn.commit()
 
 generateUserPokemon()

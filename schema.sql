@@ -1,7 +1,7 @@
 ﻿CREATE TABLE "User"(
     username VARCHAR(30) NOT NULL PRIMARY KEY,
     email VARCHAR(50) NOT NULL,
-    "password" VARCHAR(50) NOT NULL
+    "password" VARCHAR(80) NOT NULL
 );
 
 CREATE TABLE "Type"(
