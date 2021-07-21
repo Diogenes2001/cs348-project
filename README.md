@@ -67,6 +67,14 @@ We support the following functionalities:
 - Changing an accounts password
 - Deleting an account
 
+Existing accounts you can use for testing:
+
+|  Username  |  Password  |
+|:----------:|:----------:|
+|   user1    |   pass1    |
+|   user2    |   pass2    |
+|   user3    |   pass3    |
+
 The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `Login.vue`, `Signup.vue`, `ChangePassword.vue` and `Delete.vue`.
 
 ### **Program-Generated Teams**

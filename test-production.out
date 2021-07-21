@@ -37,20 +37,20 @@ Feature 3:
 
 Before example signup:
 
- username |      email      | password
-----------+-----------------+----------
- user1    | user1@gmail.com | pass1
- user2    | user1@gmail.com | pass2
- user3    | user1@gmail.com | pass3
+ username |      email      |                         password
+----------+-----------------+--------------------------------------------------------------
+ user1    | user1@gmail.com | $2b$12$WQkPRDNuqyg15s74dTPcAehU/ok.x8Zpq3U3jGQ7NIIP3hIFF0ZE2
+ user2    | user1@gmail.com | $2b$12$E6iV0NWWBSwr.I36.QsKMuDBG86ornMDYQLnVrAkxuocRulPfM45W
+ user3    | user1@gmail.com | $2b$12$VdChJ/GZ6/XUGy/qfBgc8.92MR0G5gqx5IrddTHmP89w.TKDvkBsm
 (3 rows)
 
 After example signup/ before example changing password:
 
- username |      email      |      password
-----------+-----------------+--------------------
- user1    | user1@gmail.com | pass1
- user2    | user1@gmail.com | pass2
- user3    | user1@gmail.com | pass3
+ username |      email      |                         password
+----------+-----------------+--------------------------------------------------------------
+ user1    | user1@gmail.com | $2b$12$WQkPRDNuqyg15s74dTPcAehU/ok.x8Zpq3U3jGQ7NIIP3hIFF0ZE2
+ user2    | user1@gmail.com | $2b$12$E6iV0NWWBSwr.I36.QsKMuDBG86ornMDYQLnVrAkxuocRulPfM45W
+ user3    | user1@gmail.com | $2b$12$VdChJ/GZ6/XUGy/qfBgc8.92MR0G5gqx5IrddTHmP89w.TKDvkBsm
  username | email@address   | encrypted_password
 (4 rows)
 
@@ -63,22 +63,27 @@ Example login with authentication / verifying old password:
 
 After example changing password/before example deletion:
 
- username |      email      |        password
-----------+-----------------+------------------------
- user1    | user1@gmail.com | pass1
- user2    | user1@gmail.com | pass2
- user3    | user1@gmail.com | pass3
+ username |      email      |                         password
+----------+-----------------+--------------------------------------------------------------
+ user1    | user1@gmail.com | $2b$12$WQkPRDNuqyg15s74dTPcAehU/ok.x8Zpq3U3jGQ7NIIP3hIFF0ZE2
+ user2    | user1@gmail.com | $2b$12$E6iV0NWWBSwr.I36.QsKMuDBG86ornMDYQLnVrAkxuocRulPfM45W
+ user3    | user1@gmail.com | $2b$12$VdChJ/GZ6/XUGy/qfBgc8.92MR0G5gqx5IrddTHmP89w.TKDvkBsm
  username | email@address   | new_encrypted_password
 (4 rows)
 
 After example deletion:
 
- username |      email      | password
-----------+-----------------+----------
- user1    | user1@gmail.com | pass1
- user2    | user1@gmail.com | pass2
- user3    | user1@gmail.com | pass3
+ username |      email      |                         password
+----------+-----------------+--------------------------------------------------------------
+ user1    | user1@gmail.com | $2b$12$WQkPRDNuqyg15s74dTPcAehU/ok.x8Zpq3U3jGQ7NIIP3hIFF0ZE2
+ user2    | user1@gmail.com | $2b$12$E6iV0NWWBSwr.I36.QsKMuDBG86ornMDYQLnVrAkxuocRulPfM45W
+ user3    | user1@gmail.com | $2b$12$VdChJ/GZ6/XUGy/qfBgc8.92MR0G5gqx5IrddTHmP89w.TKDvkBsm
 (3 rows)
+
+Note: The exact hash values generated may be different each time due to how flask-bcrypt
+      works. In our code though, we check if the password matches using
+      bcrypt.check_password_hash. Also, our app will never actually add a string
+      (such as 'encrypted_password') to the table, this is only for example purposes.
 
 
 Feature 4: User-owned pokemon
