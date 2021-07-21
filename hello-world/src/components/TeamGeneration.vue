@@ -4,8 +4,10 @@
     <div style="padding-top: 40px;">
     <b-container class="bv-example-row">
     <b-form @submit="onSubmit">
-        <b-form-input v-model="pokemonNameFilter" placeholder="Enter a Pokemon Name" @input.native="onChange"></b-form-input>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-form-row>
+            <b-col><b-form-input v-model="pokemonNameFilter" placeholder="Enter a Pokemon Name"></b-form-input></b-col>
+            <b-col md="auto"><b-button pill type="submit" variant="info">Submit</b-button></b-col>
+        </b-form-row>
     </b-form>
     </b-container>
     </div>
@@ -14,7 +16,8 @@
     <b-container class="bv-example-row">
     <h1>Our Team Picks</h1>
     <hr><br>
-    <b-row v-for="(team, index) in programGeneratedTeams" :key="index">
+    <b-row v-for="(team, index) in programGeneratedTeams" :key="index" align-h="center" class="row-style">
+        <b-col cols="0.1" :style="'color: DarkGray'">{{ index + 1 }}</b-col>
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
             <a v-bind:href="'/pokemon/'+ pokemon[0]">
                 <b-img center v-bind:src="require(`@/assets/pokemon/${pokemon[0]}.png`)" width="150%" height="150%" :id="`program-${index}-${index2}`" />
@@ -26,11 +29,12 @@
     </b-row>
     </b-container>
     </div>
-    <br><br>
+    <br>
     <div>
     <b-container class="bv-example-row">
     <h1>Users' Team Picks</h1>
     <hr><br>
+    <b-row v-if="userGeneratedTeams.length == 0" align-h="center">(No Teams &#9785;)</b-row>
     <b-row v-for="(team, index) in userGeneratedTeams" :key="index">
         <b-col v-for="(pokemon, index2) in team" :key="index2" md="auto">
             <a v-bind:href="'/pokemon/'+ pokemon[0]">
@@ -96,3 +100,12 @@ export default {
         },
     };
 </script>
+
+<style>
+.row-style {
+  padding: 1rem 0rem !important;
+  margin-bottom: 2rem !important;
+  background: WhiteSmoke;
+  border-radius: 25px;
+}
+</style>
