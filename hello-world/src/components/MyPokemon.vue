@@ -13,6 +13,13 @@
         v-bind:atk="mon.atk" v-bind:def="mon.def"
         v-bind:spAtk="mon.spAtk" v-bind:spDef="mon.spDef"
         v-bind:isShiny="mon.isShiny"
+        v-bind:gender="mon.gender"
+        v-bind:ability="mon.ability"
+        v-bind:level="mon.level"
+        v-bind:move1="mon.move1"
+        v-bind:move2="mon.move2"
+        v-bind:move3="mon.move3"
+        v-bind:move4="mon.move4"
         />
       <br><br>
       </b-col>

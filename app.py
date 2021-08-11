@@ -583,9 +583,49 @@ def get_ownedpokemon():
         'spd': 1,
         'ability': 'Overgrow',
         'move1': 'Vine Whip',
-        'move2': 'Vine Whip',
+        'move2': 'Thunderthrower',
         'move3': 'Vine Whip',
         'move4': 'Vine Whip'
+    },  {
+        'species': 29,
+        'speciesName': 'Bulbasaur',
+        'name': 'ligma', # nickname if given, else species name
+        'types': ('Grass', 'Poison'),
+        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
+        'level': 69,
+        'gender': 'male',
+        'isShiny': 'true',
+        'hp': 1,
+        'atk': 1,
+        'def': 1,
+        'spAtk': 1,
+        'spDef': 1,
+        'spd': 1,
+        'ability': 'Blaze',
+        'move1': 'Vine Whip',
+        'move2': 'Thunderbolt',
+        'move3': 'Vine Whip',
+        'move4': 'Vine Whip'
+    },  {
+        'species': 29,
+        'speciesName': 'Bulbasaur',
+        'name': 'ligma', # nickname if given, else species name
+        'types': ('Grass', 'Poison'),
+        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
+        'level': 69,
+        'gender': 'male',
+        'isShiny': 'true',
+        'hp': 1,
+        'atk': 1,
+        'def': 1,
+        'spAtk': 1,
+        'spDef': 1,
+        'spd': 1,
+        'ability': 'Overgrow',
+        'move1': 'Vine Whip',
+        'move2': 'Vine Whip',
+        'move3': 'Vine Whip',
+        'move4': 'Thunder'
     }],]
     return jsonify({
         'status': 'success',

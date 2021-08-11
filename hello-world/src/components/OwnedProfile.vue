@@ -44,10 +44,21 @@
       <td>SpDef: {{ spDef }}</td>
     </tr>
     <tr>
-      <td>Spd: {{ spd }}</td>
+      <td>Level: {{ level }}</td>
     </tr>
-    <tr v-if="moves && moves.length != 0">
-      <td>{{ moves ? "Selected Moves Known: " + moves : (evolvesFromName ? "Evolves from: " + evolvesFromName : "") }}</td>
+    <tr>
+      <td>Ability: {{ ability }}</td>
+    </tr>
+    <tr>
+      <td>Gender: {{ gender }}</td>
+    </tr>
+    <tr>
+      <td>Move 1: {{ move1 }}</td>
+      <td>Move 2: {{ move2 }}</td>
+    </tr>
+    <tr>
+      <td>Move 3: {{ move3 }}</td>
+      <td>Move 4: {{ move4 }}</td>
     </tr>
   </tbody>
 </table>
@@ -88,9 +99,14 @@ export default {
     def: Number,
     spAtk: Number,
     spDef: Number,
-    moves: String,
-    evolvesFromName: String,
     isShiny: Boolean,
+    level: Number,
+    gender: String,
+    ability: String,
+    move1: String,
+    move2: String,
+    move3: String,
+    move4: String,
   }
 }
 </script>
