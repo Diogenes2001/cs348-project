@@ -12,9 +12,11 @@
   <b-col v-for="(type, index) in types" :key="index" md="auto">
 
   <!-- TO-DO: Dynamically change color of background depending on type? -->
+  <h4>
   <b-badge pill :pressed="true" variant="dark" v-bind:style="{ 'background-color' : colors[index] }">
   {{ type }}
   </b-badge>
+  </h4>
   </b-col>
 </b-row>
 <br>
