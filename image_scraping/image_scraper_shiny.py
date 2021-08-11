@@ -23,26 +23,15 @@ cur.execute(
 failed = []
 skipped = []
 for id, name in cur:
-    filename = '../hello-world/src/assets/pokemon/{0}.png'.format(id)
+    filename = '../hello-world/src/assets/pokemon/{0}-shiny.png'.format(id)
     if os.path.isfile(filename): # if already have image, no need to get another one
         print("image exists for pokemon {0}: {1}".format(id, name))
         skipped.append(str(id))
         continue
     print("getting image for pokemon {0}: {1}".format(id, name))
     try:
-        # alt_text = 'File:{0:03d}{1}.png'.format(id, name)
-        # URL = 'https://bulbapedia.bulbagarden.net/wiki/' + alt_text
-        # page = requests.get(URL)
-        # soup = BeautifulSoup(page.content, 'html.parser')
-        # img = soup.find('img', alt=alt_text)
-        # with open(filename, 'wb') as handler:
-        #     img_location = img.attrs['src']
-        #     if not img_location.startswith("https:"):
-        #         img_location = "https:" + img_location
-        #     response = requests.get(img_location, stream=True)
-        #     handler.write(response.content)
         with open(filename, 'wb') as handler:
-            img_location = 'https://www.serebii.net/swordshield/pokemon/{0:03d}.png'.format(id)
+            img_location = 'https://www.serebii.net/Shiny/SWSH/{0:03d}.png'.format(id)
             response = requests.get(img_location, stream=True)
             handler.write(response.content)
     except:
