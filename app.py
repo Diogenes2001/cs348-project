@@ -530,7 +530,46 @@ def get_pokemon():
         'evolutions': evolutions,
         'effectiveness': effectiveness
     })
-
+@app.route('/ownedpokemon', methods=['POST'])
+def get_ownedpokemon():
+        #     CHECK(gender IN ('female', 'male', 'unknown')),
+        # isShiny BOOLEAN NOT NULL DEFAULT 'false',
+        # hp INTEGER NOT NULL CHECK(hp >= 0),
+        # atk INTEGER NOT NULL CHECK(atk >= 0),
+        # def INTEGER NOT NULL CHECK(def >= 0),
+        # spAtk INTEGER NOT NULL CHECK(spAtk >= 0),
+        # spDef INTEGER NOT NULL CHECK(spDef >= 0),
+        # spd INTEGER NOT NULL CHECK(spd >= 0),
+        # ability VARCHAR(30) NOT NULL,
+        # move1 VARCHAR(30) NOT NULL REFERENCES Move(moveName),
+        # move2 VARCHAR(30) REFERENCES Move(moveName),
+        # move3 VARCHAR(30) REFERENCES Move(moveName),
+        # move4 VARCHAR(30) REFERENCES Move(moveName),
+    ownedpokemon = [[{
+        'species': 29,
+        'speciesName': 'Bulbasaur',
+        'name': 'ligma', # nickname if given, else species name
+        'types': ('Grass', 'Poison'),
+        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
+        'level': 69,
+        'gender': 'male',
+        'isShiny': 'false',
+        'hp': 1,
+        'atk': 1,
+        'def': 1,
+        'spAtk': 1,
+        'spDef': 1,
+        'spd': 1,
+        'ability': 'Overgrow',
+        'move1': 'Vine Whip',
+        'move2': 'Vine Whip',
+        'move3': 'Vine Whip',
+        'move4': 'Vine Whip'
+    }],]
+    return jsonify({
+        'status': 'success',
+        'ownedpokemon': ownedpokemon
+    })
 # This route is for feature 2 (recursive query)
 @app.route('/evolutions', methods=['POST'])
 def get_evolutions():
