@@ -12,6 +12,7 @@
         v-bind:hp="mon.hp" v-bind:spd="mon.spd"
         v-bind:atk="mon.atk" v-bind:def="mon.def"
         v-bind:spAtk="mon.spAtk" v-bind:spDef="mon.spDef"
+        v-bind:isShiny="mon.isShiny"
         />
       <br><br>
       </b-col>
@@ -46,6 +47,7 @@ export default {
         axios.post(path, {id: id})
           .then((res) => {
             this.ownedpokemon = res.data.ownedpokemon;
+            console.log(this.ownedpokemon)
           })
           .catch((error) => {
             // eslint-disable-next-line
