@@ -43,7 +43,7 @@
     </tr>
   </tbody>
 </table>
-<h5 class="text-center">Stats</h5>
+<h5 class="text-center">Individual Stats</h5>
 <table class="table table-bordered">
   <tbody>
     <tr>
@@ -60,7 +60,7 @@
     </tr>
 </tbody>
 </table>
-<h5 class="text-center">Current Moves</h5>
+<h5 class="text-center">Individual Moves</h5>
 <table class="table table-bordered">
   <tbody>
     <tr>
