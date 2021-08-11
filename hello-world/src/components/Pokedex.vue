@@ -87,6 +87,24 @@
               ></b-form-checkbox-group>
             </b-form-group>
           <br>
+          <b-form-group label="Weaknesses:">
+              <b-form-checkbox-group
+                id="checkbox-group-3"
+                v-model="effectiveness.weaknesses"
+                :options="options"
+                name="weaknesses"
+              ></b-form-checkbox-group>
+            </b-form-group>
+          <br>
+          <b-form-group label="Resistances:">
+              <b-form-checkbox-group
+                id="checkbox-group-4"
+                v-model="effectiveness.resistances"
+                :options="options"
+                name="resistances"
+              ></b-form-checkbox-group>
+            </b-form-group>
+          <br>
           <b-container class="bv-example-row">
             <b-row align-h="end">
               <b-col md="auto"><b-button type="reset" pill variant="danger">Reset</b-button></b-col>
@@ -167,6 +185,10 @@ export default {
             minPower: '',
             minAccuracy: '',
         },
+        effectiveness: {
+            weaknesses: [],
+            resistances: [],
+        },
         options: [
           { text: 'Normal', value: 'Normal' },
           { text: 'Fire', value: 'Fire' },
@@ -234,11 +256,15 @@ export default {
         this.moveInfo.minPP = '';
         this.moveInfo.minPower = '';
         this.moveInfo.minAccuracy = '';
+
+        this.effectiveness.weaknesses = []
+        this.effectiveness.resistances = []
       },
       getParams() {
         const params = {
           pokemonInfo: this.pokemonInfo,
-          moveInfo: this.moveInfo
+          moveInfo: this.moveInfo,
+          effectiveness: this.effectiveness
         };
         return params;
       },

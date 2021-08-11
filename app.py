@@ -245,6 +245,48 @@ def all_pokemon():
             except:
                 pokemonConstraints.append(key + ' ILIKE %s')
                 user_values.append('%' + val + '%')
+    if len(data['effectiveness']['weaknesses']) > 0 or len(data['effectiveness']['resistances']) > 0:
+        valid_types = None
+        for type in data['effectiveness']['weaknesses']:
+            cur.execute('''
+                (
+                    SELECT e1.pokemonType, e2.pokemonType FROM Effectiveness AS e1, Effectiveness AS e2 
+                    WHERE e1.moveType = %s AND e2.moveType = %s AND (e1.effectiveness * e2.effectiveness) > 1
+                    AND e1.pokemonType > e2.pokemonType
+                ) UNION (
+                    SELECT pokemonType, NULL FROM Effectiveness WHERE moveType = %s AND effectiveness > 1
+                )
+            ''', [type, type, type])
+            
+            types = set((c1, c2) for c1, c2 in cur)
+            if valid_types is None:
+                valid_types = types
+            else:
+                valid_types = valid_types.intersection(types)
+        for type in data['effectiveness']['resistances']:
+            cur.execute('''
+                (
+                    SELECT e1.pokemonType, e2.pokemonType FROM Effectiveness AS e1, Effectiveness AS e2 
+                    WHERE e1.moveType = %s AND e2.moveType = %s AND (e1.effectiveness * e2.effectiveness) < 1
+                    AND e1.pokemonType > e2.pokemonType
+                ) UNION (
+                    SELECT pokemonType, NULL FROM Effectiveness WHERE moveType = %s AND effectiveness < 1
+                )
+            ''', [type, type, type])
+            
+            types = set((c1, c2) for c1, c2 in cur)
+            if valid_types is None:
+                valid_types = types
+            else:
+                valid_types = valid_types.intersection(types)
+        type_contraint = ' OR '.join([
+                '(type1 = \'{0}\' AND type2 = \'{1}\') OR (type1 = \'{1}\' AND type2 = \'{0}\')'.format(v[0], v[1])
+                if v[1] is not None
+                else '(type1 = \'{0}\' AND type2 IS NULL)'.format(v[0])
+             for v in valid_types
+             ])
+        pokemonConstraints.append(type_contraint)
+
     # # POKEMON INFO
     # name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
     # types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
