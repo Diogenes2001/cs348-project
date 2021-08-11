@@ -2,7 +2,7 @@
 <div>
   <myHeader />
   <br>
-  <div>
+  <div style="padding: 20px;">
   <b-row v-for="(row, index) in ownedpokemon" :key="index">
       <b-col v-for="(mon, index) in row" :key="index">
       <ownedprofile

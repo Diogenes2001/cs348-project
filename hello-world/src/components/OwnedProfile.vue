@@ -23,25 +23,11 @@
 
 <!-- STATS/INFO TABLE -->
 <b-row class="text-center">
+<h5>Details</h5>
 <table class="table table-bordered">
   <tbody>
     <tr>
       <td>Species: {{ speciesName }}</td>
-    </tr>
-    <tr>
-      <td>HP: {{ hp }}</td>
-    </tr>
-    <tr>
-      <td>Atk: {{ atk }}</td>
-    </tr>
-    <tr>
-      <td>Def: {{ def }}</td>
-    </tr>
-    <tr>
-      <td>SpAtk: {{ spAtk }}</td>
-    </tr>
-    <tr>
-      <td>SpDef: {{ spDef }}</td>
     </tr>
     <tr>
       <td>Level: {{ level }}</td>
@@ -53,12 +39,37 @@
       <td>Gender: {{ gender }}</td>
     </tr>
     <tr>
-      <td>Move 1: {{ move1 }}</td>
-      <td>Move 2: {{ move2 }}</td>
+      <td>Shiny: {{ isShiny == 'true' ? 'Yes' : 'No' }}</td>
+    </tr>
+  </tbody>
+</table>
+<h5 class="text-center">Stats</h5>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>HP: {{ hp }}</td>
+      <td>Spd: {{ spd }}</td>
     </tr>
     <tr>
-      <td>Move 3: {{ move3 }}</td>
-      <td>Move 4: {{ move4 }}</td>
+      <td>Atk: {{ atk }}</td>
+      <td>Def: {{ def }}</td>
+    </tr>
+    <tr>
+      <td>SpAtk: {{ spAtk }}</td>
+      <td>SpDef: {{ spDef }}</td>
+    </tr>
+</tbody>
+</table>
+<h5 class="text-center">Current Moves</h5>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>{{ move1 }}</td>
+      <td>{{ move2 }}</td>
+    </tr>
+    <tr>
+      <td>{{ move3 }}</td>
+      <td>{{ move4 }}</td>
     </tr>
   </tbody>
 </table>

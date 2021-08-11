@@ -27,22 +27,20 @@
   <tbody>
     <tr>
       <td>HP: {{ hp }}</td>
+      <td>Spd: {{ spd }}</td>
     </tr>
     <tr>
       <td>Atk: {{ atk }}</td>
-    </tr>
-    <tr>
       <td>Def: {{ def }}</td>
     </tr>
     <tr>
       <td>SpAtk: {{ spAtk }}</td>
-    </tr>
-    <tr>
       <td>SpDef: {{ spDef }}</td>
     </tr>
-    <tr>
-      <td>Spd: {{ spd }}</td>
-    </tr>
+  </tbody>
+</table>
+<table class="table table-bordered">
+  <tbody>
     <tr v-if="moves && moves.length != 0">
       <td>{{ moves ? "Selected Moves Known: " + moves : (evolvesFromName ? "Evolves from: " + evolvesFromName : "") }}</td>
     </tr>
