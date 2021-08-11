@@ -473,13 +473,14 @@ def get_pokemon():
         cur.execute('''
             SELECT moveType, effectiveness FROM Effectiveness WHERE pokemonType = %s
         ''', [types[0]])
-    effectiveness = [[
+    effectiveness = [
                 {
                     'moveType': c1,
-                    'effectivenesss': str(c2),
+                    'color': get_color_by_type(c1),
+                    'effectiveness': str(c2),
                 }
                 for c1, c2 in cur
-    ],]
+    ]
     
     return jsonify({
         'status': 'success',

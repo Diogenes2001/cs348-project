@@ -36,6 +36,29 @@
       </b-col>
     </b-row>
   </b-container>
+  <b-container class="bv-example-row">
+    <h1>Weaknesses and Resistances</h1>
+    <hr>
+    <h4>When used against this Pokémon, a move of the given type has:</h4>
+    <br>
+    <b-row class="justify-content-md-center">
+      <table class="table">
+        <tbody>
+          <b-col v-for="e in effectiveness" :key="e">
+            <td>
+              <h4>
+                <b-badge pill :pressed="true" variant="dark" v-bind:style="{ 'background-color' : e['color'] }">
+                {{ e['moveType'] }}
+                </b-badge>
+                :
+                x{{ e['effectiveness'] }} effectiveness
+              </h4>
+            </td>
+          </b-col>
+        </tbody>
+      </table>
+    </b-row>
+  </b-container>
 </div>
 </template>
 
@@ -56,6 +79,7 @@ export default {
         pokemon: [],
         pokemonId: null,
         evolutions: [],
+        effectiveness: [],
         msg: "Click on a Pokémon's image to learn more."
       };
     },
@@ -67,7 +91,9 @@ export default {
           .then((res) => {
             this.pokemon = res.data.pokemon;
             this.evolutions = res.data.evolutions;
+            this.effectiveness = res.data.effectiveness;
             console.log(this.evolutions)
+            console.log(this.effectiveness)
             if(this.evolutions[0].length == 0){
               this.msg = "This Pokemon does not evolve."
             }
