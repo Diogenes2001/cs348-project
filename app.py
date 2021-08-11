@@ -140,7 +140,7 @@ POKEMON = [
 def try_deleteaccount():
     data = request.get_json()
 
-    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+    cur.execute('''SELECT password FROM "User" WHERE username=%s''',[data['username']])
 
     tup = cur.fetchone()
     if tup is not None:
@@ -148,7 +148,7 @@ def try_deleteaccount():
 
         if bcrypt.check_password_hash(passw, data['password']):
 
-            cur.execute('''DELETE FROM "User" WHERE username='{0}' '''.format(data['username']))
+            cur.execute('''DELETE FROM "User" WHERE username=%s ''', [data['username']])
 
             conn.commit()
 
@@ -160,7 +160,7 @@ def try_deleteaccount():
 def try_changepass():
     data = request.get_json()
 
-    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+    cur.execute('''SELECT password FROM "User" WHERE username=%s ''', [data['username']])
 
     tup = cur.fetchone()
     if tup is not None:
@@ -169,7 +169,7 @@ def try_changepass():
         if bcrypt.check_password_hash(passw, data['curpass']):
 
             pw_hash = bcrypt.generate_password_hash(data['newpass']).decode('utf-8')
-            cur.execute('''UPDATE "User" SET password = '{0}' WHERE username='{1}' '''.format(pw_hash, data['username']))
+            cur.execute('''UPDATE "User" SET password = %s WHERE username= %s ''', [pw_hash, data['username']])
 
             conn.commit()
 
@@ -181,14 +181,14 @@ def try_changepass():
 def try_signup():
     data = request.get_json()
 
-    cur.execute('''SELECT * FROM "User" WHERE username='{0}' '''.format(data['username']))
+    cur.execute('''SELECT * FROM "User" WHERE username= %s ''', [data['username']])
 
     tup = cur.fetchone()
     if tup is not None:
         return jsonify({ 'status': 'failure', 'error': 'Username is already taken.'})
 
     pw_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-    cur.execute('''INSERT INTO "User" VALUES ('{0}', '{1}', '{2}') '''.format(data['username'], data['email'], pw_hash))
+    cur.execute('''INSERT INTO "User" VALUES (%s, %s, %s) ''', [data['username'], data['email'], pw_hash])
 
     conn.commit()
 
@@ -200,7 +200,7 @@ def try_signup():
 def try_login():
     data = request.get_json()
 
-    cur.execute('''SELECT password FROM "User" WHERE username='{0}' '''.format(data['username']))
+    cur.execute('''SELECT password FROM "User" WHERE username= %s ''', [data['username']])
 
     tup = cur.fetchone()
     if tup is not None:
@@ -219,24 +219,32 @@ def all_pokemon():
     data = request.get_json()
     print(data)
 
+    user_values = []
+
     pokemonConstraints = ['0 = 0'] # always true, used cuz i'm lazy and don't want to write queries with and without WHERE lol
     for key, val in data['pokemonInfo'].items():
         if len(val) == 0:
             continue
         if key.startswith('max'):
-            pokemonConstraints.append(key[3:] + ' <= ' + val)
+            pokemonConstraints.append(key[3:] + ' <= %s')
+            user_values.append(val)
         elif key.startswith('min'):
-            pokemonConstraints.append(key[3:] + ' >= ' + val)
+            pokemonConstraints.append(key[3:] + ' >= %s')
+            user_values.append(val)
         elif key == 'types':
+            placeholders = ['%s' for i in val]
             print(val)
-            joined = '\',\''.join(val)
-            pokemonConstraints.append('(type1 IN (\'' + joined + '\') OR type2 IN (\'' + joined + '\'))')
+            user_values = user_values + val + val
+            joined = ','.join(placeholders)
+            pokemonConstraints.append('(type1 IN (' + joined + ') OR type2 IN (' + joined + '))')
         else:
             try:
                 int(val)
-                pokemonConstraints.append(key + ' = ' + val)
+                pokemonConstraints.append(key + ' = %s')
+                user_values.append(val)
             except:
-                pokemonConstraints.append(key + ' ILIKE \'%' + val + '%\'')
+                pokemonConstraints.append(key + ' ILIKE %s')
+                user_values.append('%' + val + '%')
     # # POKEMON INFO
     # name = data['pokemonInfo']['name']    # Name of pokemon user would like to filter for (empty means ALL)
     # types = data['pokemonInfo']['types']  # List of types user would like to filter for (empty means ALL)
@@ -254,20 +262,27 @@ def all_pokemon():
         if len(val) == 0:
             continue
         if key.startswith('max'):
-            moveConstraints.append(key[3:] + ' <= ' + val)
+            moveConstraints.append(key[3:] + ' <= %s')
+            user_values.append(val)
         elif key.startswith('min'):
-            moveConstraints.append(key[3:] + ' >= ' + val)
+            moveConstraints.append(key[3:] + ' >= %s')
+            user_values.append(val)
         elif key == 'types':
-            joined = '\',\''.join(val)
-            moveConstraints.append('moveType IN (\'' + joined + '\')')
+            placeholders = ['%s' for i in val]
+            user_values = user_values + val
+            joined = ','.join(placeholders)
+            moveConstraints.append('moveType IN (' + joined + ')')
         elif key == 'name' or key == 'moveName':
-            moveConstraints.append('Move.moveName' + ' ILIKE \'%' + val + '%\'')
+            moveConstraints.append('Move.moveName' + ' ILIKE %s')
+            user_values.append('%' + val + '%')
         else:
             try:
                 int(val)
-                moveConstraints.append(key + ' = ' + val)
+                moveConstraints.append(key + ' = %s')
+                user_values.append(val)
             except:
-                moveConstraints.append(key + ' ILIKE \'%' + val + '%\'')
+                moveConstraints.append(key + ' ILIKE %s')
+                user_values.append('%' + val + '%')
 
     # # MOVE INFO
     # moveName = data['moveInfo']['name']   # Name of learnable move user would like to filter for (empty means ALL)
@@ -288,7 +303,7 @@ def all_pokemon():
             ORDER BY id
             '''.format(
                 ' AND '.join(pokemonConstraints)
-            )
+            ), user_values
         )
 
         # print('test', sys.stderr)
@@ -334,7 +349,7 @@ def all_pokemon():
             ({0}) AND ({1})
             GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
             ORDER BY id
-            '''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)))
+            '''.format(' AND '.join(pokemonConstraints), ' AND '.join(moveConstraints)), user_values)
 
         # print('test', sys.stderr)
 
@@ -380,10 +395,10 @@ def get_pokemon():
                 ON Move.moveName = CanLearnMove.moveName
             )
             WHERE
-            (id={0})
+            (id=%s)
             GROUP BY id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
             ORDER BY id
-            '''.format(id)
+            ''', [id]
             )
     pokemon = [[
                 {
@@ -418,9 +433,9 @@ def get_pokemon():
             WHERE id IN (
                 SELECT evolvesInto
                 FROM Evolution
-                WHERE evolvesFrom = {0}
+                WHERE evolvesFrom = %s
             )
-            '''.format(id)
+            ''', [id]
             )
     evolutions = [[
                 {
@@ -490,7 +505,13 @@ def get_evolutions():
 def program_generated_teams():
     data = request.get_json()
     pokemonNameFilter = data['pokemonNameFilter']
-    nameCond = f"WHERE LOWER(Pokemon1.name) = LOWER('{pokemonNameFilter}')" if pokemonNameFilter else ""
+
+    user_values = []
+
+    nameCond = ""
+    if pokemonNameFilter:
+        nameCond = "WHERE LOWER(Pokemon1.name) = LOWER(%s)"
+        user_values.append(pokemonNameFilter)
     idCond = "" if pokemonNameFilter else "AND Pokemon1.id < Pokemon2.id"
 
     cur.execute(f'''
@@ -658,7 +679,7 @@ def program_generated_teams():
             COALESCE(Pokemon36.percentage, 0) +
             COALESCE(Pokemon46.percentage, 0) +
             COALESCE(Pokemon56.percentage, 0) DESC
-        LIMIT 5''')
+        LIMIT 5''', user_values)
     tups = cur.fetchall()
 
     return jsonify({
@@ -675,7 +696,10 @@ def program_generated_teams():
 def user_generated_teams():
     data = request.get_json()
     pokemonNameFilter = data['pokemonNameFilter']
-    nameCond = lambda isWhere, field, last: (("AND (" if isWhere else "OR") + f" LOWER({field}) = LOWER('{pokemonNameFilter}')" + (")" if last else "")) if pokemonNameFilter else ""
+    user_values = []
+    if pokemonNameFilter:
+        user_values = [pokemonNameFilter for i in range(6)]
+    nameCond = lambda isWhere, field, last: (("AND (" if isWhere else "OR") + f" LOWER({field}) = LOWER(%s)" + (")" if last else "")) if pokemonNameFilter else ""
 
     cur.execute(f'''
         SELECT pid1,
@@ -711,7 +735,7 @@ def user_generated_teams():
         {nameCond(False, 'Pokemon5.name', False)}
         {nameCond(False, 'Pokemon6.name', True)}
         ORDER BY CAST(wins AS FLOAT) / CAST(wins + losses AS FLOAT) DESC
-        LIMIT 5''')
+        LIMIT 5''', user_values)
     tups = cur.fetchall()
 
     for i in range(len(tups)):
