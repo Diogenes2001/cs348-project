@@ -337,11 +337,11 @@ def all_pokemon():
                 FROM (
                 (
                     Pokemon
-                    JOIN
+                    LEFT JOIN
                     CanLearnMove
                     ON id=pid
                 )
-                JOIN 
+                LEFT JOIN 
                 Move
                 ON Move.moveName = CanLearnMove.moveName
             )
@@ -386,11 +386,11 @@ def get_pokemon():
                 FROM (
                 (
                     Pokemon
-                    JOIN
+                    LEFT JOIN
                     CanLearnMove
                     ON id=pid
                 )
-                JOIN 
+                LEFT JOIN 
                 Move
                 ON Move.moveName = CanLearnMove.moveName
             )
@@ -454,15 +454,38 @@ def get_pokemon():
                 for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, evolvesFromId in cur
         ],]
     idToName = dict()
+    print(pokemon)
+    print(id)
     idToName[int(id)] = pokemon[0][0]['name']
     for d in evolutions[0]:
         idToName[d['id']] = d['name']
     for d in evolutions[0]:
         d['evolvesFromName'] = idToName[d['evolvesFromId']]
+    
+    effectiveness = None
+    types = pokemon[0][0]['types']
+    if len(types) == 2:
+        cur.execute('''
+            SELECT e1.moveType, (e1.effectiveness * e2.effectiveness)  FROM Effectiveness AS e1, Effectiveness AS e2 
+            WHERE e1.pokemonType = %s AND e2.pokemonType = %s AND e1.moveType = e2.moveType
+        ''', [types[0], types[1]])
+    else:
+        cur.execute('''
+            SELECT moveType, effectiveness FROM Effectiveness WHERE pokemonType = %s
+        ''', [types[0]])
+    effectiveness = [[
+                {
+                    'moveType': c1,
+                    'effectivenesss': str(c2),
+                }
+                for c1, c2 in cur
+    ],]
+    
     return jsonify({
         'status': 'success',
         'pokemon': pokemon,
         'evolutions': evolutions,
+        'effectiveness': effectiveness
     })
 
 # This route is for feature 2 (recursive query)
