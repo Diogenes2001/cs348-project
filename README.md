@@ -31,6 +31,7 @@ Since there is a limit on the file size for submission, the image for each Pokem
 ```
 cd image_scraping
 python image_scraper.py
+python image_scaper_shiny.py
 ```
 The image scraper is expected to take some time. Some pictures already have been downloaded manually, as the scraper has trouble scraping them.
 
@@ -76,6 +77,20 @@ Existing accounts you can use for testing:
 |   user3    |   pass3    |
 
 The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `Login.vue`, `Signup.vue`, `ChangePassword.vue` and `Delete.vue`.
+
+### **OwnedPokemon**
+
+We support the following functionalities:
+- Display of user-owned Pokemon. Details include:
+    - Different species, nicknames and genders 
+    - Levels, abilities, moves and stats
+    - Different images for shiny Pokemon
+- Searching for user-owned Pokemon
+- Creation of new user-owned Pokemon
+- Editing of user-owned Pokemon
+- Deletion of user-owned Pokemon
+
+The backend is in `app.py`. The frontend is in the following files in the `hello-world/src/components` folder: `MyPokemon.vue` and `OwnedProfile.vue`.
 
 ### **Program-Generated Teams**
 
