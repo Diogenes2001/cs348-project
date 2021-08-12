@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 import psycopg2
 import sys
+import threading
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -15,6 +16,8 @@ cur = conn.cursor()
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+dbLock = threading.Lock()
 
 def get_color_by_type(type):
     if type == 'Normal':
@@ -140,17 +143,21 @@ POKEMON = [
 def try_deleteaccount():
     data = request.get_json()
 
+    dbLock.acquire()
     cur.execute('''SELECT password FROM "User" WHERE username=%s''',[data['username']])
 
     tup = cur.fetchone()
+    dbLock.release()
     if tup is not None:
         passw = tup[0]
 
         if bcrypt.check_password_hash(passw, data['password']):
 
+            dbLock.acquire()
             cur.execute('''DELETE FROM "User" WHERE username=%s ''', [data['username']])
 
             conn.commit()
+            dbLock.release()
 
             return jsonify({'status': 'success', 'error': 'Successfully deleted your account.'})
 
@@ -160,18 +167,22 @@ def try_deleteaccount():
 def try_changepass():
     data = request.get_json()
 
+    dbLock.acquire()
     cur.execute('''SELECT password FROM "User" WHERE username=%s ''', [data['username']])
 
     tup = cur.fetchone()
+    dbLock.release()
     if tup is not None:
         passw = tup[0]
 
         if bcrypt.check_password_hash(passw, data['curpass']):
 
             pw_hash = bcrypt.generate_password_hash(data['newpass']).decode('utf-8')
+            dbLock.acquire()
             cur.execute('''UPDATE "User" SET password = %s WHERE username= %s ''', [pw_hash, data['username']])
 
             conn.commit()
+            dbLock.release()
 
             return jsonify({'status': 'success', 'error': 'Successfully updated your password.'})
 
@@ -181,16 +192,20 @@ def try_changepass():
 def try_signup():
     data = request.get_json()
 
+    dbLock.acquire()
     cur.execute('''SELECT * FROM "User" WHERE username= %s ''', [data['username']])
 
     tup = cur.fetchone()
+    dbLock.release()
     if tup is not None:
         return jsonify({ 'status': 'failure', 'error': 'Username is already taken.'})
 
     pw_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    dbLock.acquire()
     cur.execute('''INSERT INTO "User" VALUES (%s, %s, %s) ''', [data['username'], data['email'], pw_hash])
 
     conn.commit()
+    dbLock.release()
 
     return jsonify({
         'status': 'success'
@@ -200,9 +215,11 @@ def try_signup():
 def try_login():
     data = request.get_json()
 
+    dbLock.acquire()
     cur.execute('''SELECT password FROM "User" WHERE username= %s ''', [data['username']])
 
     tup = cur.fetchone()
+    dbLock.release()
     if tup is not None:
         passw = tup[0]
 
@@ -248,6 +265,7 @@ def all_pokemon():
     if len(data['effectiveness']['weaknesses']) > 0 or len(data['effectiveness']['resistances']) > 0:
         valid_types = None
         for type in data['effectiveness']['weaknesses']:
+            dbLock.acquire()
             cur.execute('''
                 (
                     SELECT e1.pokemonType, e2.pokemonType FROM Effectiveness AS e1, Effectiveness AS e2 
@@ -257,6 +275,7 @@ def all_pokemon():
                     SELECT pokemonType, NULL FROM Effectiveness WHERE moveType = %s AND effectiveness > 1
                 )
             ''', [type, type, type])
+            dbLock.release()
             
             types = set((c1, c2) for c1, c2 in cur)
             if valid_types is None:
@@ -264,6 +283,7 @@ def all_pokemon():
             else:
                 valid_types = valid_types.intersection(types)
         for type in data['effectiveness']['resistances']:
+            dbLock.acquire()
             cur.execute('''
                 (
                     SELECT e1.pokemonType, e2.pokemonType FROM Effectiveness AS e1, Effectiveness AS e2 
@@ -273,6 +293,7 @@ def all_pokemon():
                     SELECT pokemonType, NULL FROM Effectiveness WHERE moveType = %s AND effectiveness < 1
                 )
             ''', [type, type, type])
+            dbLock.release()
             
             types = set((c1, c2) for c1, c2 in cur)
             if valid_types is None:
@@ -338,6 +359,7 @@ def all_pokemon():
     # moveAcc = data['moveInfo']['accuracy']
 
     if len(moveConstraints) == 0:
+        dbLock.acquire()
         cur.execute('''
             SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2
             FROM Pokemon
@@ -368,12 +390,14 @@ def all_pokemon():
                 }
                 for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2 in cur
         ],]
+        dbLock.release()
         return jsonify({
             'status': 'success',
             'pokemon': pokemon
         })
     else:
         # TO-DO: Get from database and transform to proper format for front-end
+        dbLock.acquire()
         cur.execute('''
             SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, STRING_AGG(Move.moveName, ', ' ORDER BY Move.moveName) 
                 FROM (
@@ -414,6 +438,7 @@ def all_pokemon():
                 }
                 for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, moves in cur
         ],]
+        dbLock.release()
         return jsonify({
             'status': 'success',
             'pokemon': pokemon
@@ -423,6 +448,7 @@ def all_pokemon():
 def get_pokemon():
     data = request.get_json()
     id = data['id']
+    dbLock.acquire()
     cur.execute('''
             SELECT id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, STRING_AGG(Move.moveName, ', ' ORDER BY Move.moveName) 
                 FROM (
@@ -495,6 +521,7 @@ def get_pokemon():
                 }
                 for id, name, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, type1, type2, evolvesFromId in cur
         ],]
+    dbLock.release()
     idToName = dict()
     print(pokemon)
     print(id)
@@ -506,6 +533,7 @@ def get_pokemon():
     
     effectiveness = None
     types = pokemon[0][0]['types']
+    dbLock.acquire()
     if len(types) == 2:
         cur.execute('''
             SELECT e1.moveType, (e1.effectiveness * e2.effectiveness)  FROM Effectiveness AS e1, Effectiveness AS e2 
@@ -523,6 +551,7 @@ def get_pokemon():
                 }
                 for c1, c2 in cur
     ]
+    dbLock.release()
     
     return jsonify({
         'status': 'success',
@@ -680,6 +709,7 @@ def program_generated_teams():
         user_values.append(pokemonNameFilter)
     idCond = "" if pokemonNameFilter else "AND Pokemon1.id < Pokemon2.id"
 
+    dbLock.acquire()
     cur.execute(f'''
         SELECT
             p1id,
@@ -847,6 +877,7 @@ def program_generated_teams():
             COALESCE(Pokemon56.percentage, 0) DESC
         LIMIT 5''', user_values)
     tups = cur.fetchall()
+    dbLock.release()
 
     return jsonify({
         'status': 'success',
@@ -867,6 +898,7 @@ def user_generated_teams():
         user_values = [pokemonNameFilter for i in range(6)]
     nameCond = lambda isWhere, field, last: (("AND (" if isWhere else "OR") + f" LOWER({field}) = LOWER(%s)" + (")" if last else "")) if pokemonNameFilter else ""
 
+    dbLock.acquire()
     cur.execute(f'''
         SELECT pid1,
                Pokemon1.name,
@@ -903,6 +935,7 @@ def user_generated_teams():
         ORDER BY CAST(wins AS FLOAT) / CAST(wins + losses AS FLOAT) DESC
         LIMIT 5''', user_values)
     tups = cur.fetchall()
+    dbLock.release()
 
     for i in range(len(tups)):
         if pokemonNameFilter:
