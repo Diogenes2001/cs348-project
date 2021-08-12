@@ -656,14 +656,63 @@ def createownedpokemon():
     if (info['shiny'] == 'TRUE'):
         shiny = True
 
+    columns = "(species, owner, isShiny, gender, ability, move1"
+    values = "(%s, %s, %s, %s, %s, %s"
+    user_values = [info['id'], data['username'], shiny, info['gender'], info['ability'], info['move1']]
+
+    if info['nickname']:
+        columns += ", nickname"
+        values += ", %s"
+        user_values.append(info['nickname'])
+    if info['level']:
+        columns += ", level"
+        values += ", %s"
+        user_values.append(info['level'])
+    if info['hp']:
+        columns += ", hp"
+        values += ", %s"
+        user_values.append(info['hp'])
+    if info['atk']:
+        columns += ", atk"
+        values += ", %s"
+        user_values.append(info['atk'])
+    if info['def']:
+        columns += ", def"
+        values += ", %s"
+        user_values.append(info['def'])
+    if info['spAtk']:
+        columns += ", spAtk"
+        values += ", %s"
+        user_values.append(info['spAtk'])
+    if info['spDef']:
+        columns += ", spDef"
+        values += ", %s"
+        user_values.append(info['spDef'])
+    if info['spd']:
+        columns += ", spd"
+        values += ", %s"
+        user_values.append(info['spd'])
+    if info['move2']:
+        columns += ", move2"
+        values += ", %s"
+        user_values.append(info['move2'])
+    if info['move3']:
+        columns += ", move3"
+        values += ", %s"
+        user_values.append(info['move3'])
+    if info['move4']:
+        columns += ", move4"
+        values += ", %s"
+        user_values.append(info['move4'])
+
+    columns += ")"
+    values += ")"
+
     try:
         cur.execute('''
-                INSERT INTO OwnedPokemon 
-                VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                ''', [info['id'], data['username'], info['nickname'], info['level'], info['gender'], 
-                shiny, info['hp'], info['atk'], info['def'], info['spAtk'], info['spDef'], info['spd'], 
-                info['ability'], info['move1'], info['move2'] if info['move2'] else None, 
-                info['move3'] if info['move3'] else None, info['move4'] if info['move3'] else None]
+                INSERT INTO OwnedPokemon {0}
+                VALUES {1};
+                '''.format(columns, values), user_values
             )
     except Exception as err:
         error = str(err)
