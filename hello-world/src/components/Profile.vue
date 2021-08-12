@@ -23,6 +23,7 @@
 
 <!-- STATS/INFO TABLE -->
 <b-row class="text-center">
+<h5>Base Stats</h5>
 <table class="table table-bordered">
   <tbody>
     <tr>
@@ -41,7 +42,7 @@
 </table>
 <table class="table table-bordered">
   <tbody>
-    <tr v-if="moves && moves.length != 0">
+    <tr v-if="(moves && moves.length != 0) || evolvesFromName">
       <td>{{ moves ? "Selected Moves Known: " + moves : (evolvesFromName ? "Evolves from: " + evolvesFromName : "") }}</td>
     </tr>
   </tbody>
