@@ -44,7 +44,7 @@
     <b-row class="justify-content-md-center">
       <table class="table">
         <tbody>
-          <b-col v-for="e in effectiveness" :key="e">
+          <b-col v-for="(e, index) in effectiveness" :key="index">
             <td>
               <h4>
                 <b-badge pill :pressed="true" variant="dark" v-bind:style="{ 'background-color' : e['color'] }">

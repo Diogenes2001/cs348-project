@@ -263,6 +263,11 @@ def all_pokemon():
                 valid_types = types
             else:
                 valid_types = valid_types.intersection(types)
+                if len(valid_types) == 0:
+                    return jsonify({
+                        'status': 'success',
+                        'pokemon': []
+                    })
         for type in data['effectiveness']['resistances']:
             cur.execute('''
                 (
@@ -279,6 +284,11 @@ def all_pokemon():
                 valid_types = types
             else:
                 valid_types = valid_types.intersection(types)
+                if len(valid_types) == 0:
+                    return jsonify({
+                        'status': 'success',
+                        'pokemon': []
+                    })
         type_contraint = ' OR '.join([
                 '(type1 = \'{0}\' AND type2 = \'{1}\') OR (type1 = \'{1}\' AND type2 = \'{0}\')'.format(v[0], v[1])
                 if v[1] is not None
