@@ -4,7 +4,7 @@
   <div style="padding-top: 20px;">
   <b-container class="bv-example-row">
     <b-button pill v-b-toggle.collapse-1 variant="info">Filters</b-button>
-    <b-collapse id="collapse-1" class="mt-2">
+    <b-collapse v-model="visible" id="collapse-1" class="mt-2">
       <b-card border-variant="dark">
         <b-form @submit="onSubmit" @reset="onReset" class="w-100">
           <b-form-group id="form-name-group"
@@ -156,6 +156,7 @@ export default {
     data() {
       return {
         pokemon: [],
+        visible: false,
         pokemonInfo: {
             name: '',
             id: '',
@@ -223,6 +224,7 @@ export default {
           .then((res) => {
             this.pokemon = res.data.pokemon;
             console.log(res.data.message);
+            this.visible = false;
           })
           .catch((error) => {
             // eslint-disable-next-line

@@ -530,107 +530,185 @@ def get_pokemon():
         'evolutions': evolutions,
         'effectiveness': effectiveness
     })
+
 @app.route('/ownedpokemon', methods=['POST'])
 def get_ownedpokemon():
-        #     CHECK(gender IN ('female', 'male', 'unknown')),
-        # isShiny BOOLEAN NOT NULL DEFAULT 'false',
-        # hp INTEGER NOT NULL CHECK(hp >= 0),
-        # atk INTEGER NOT NULL CHECK(atk >= 0),
-        # def INTEGER NOT NULL CHECK(def >= 0),
-        # spAtk INTEGER NOT NULL CHECK(spAtk >= 0),
-        # spDef INTEGER NOT NULL CHECK(spDef >= 0),
-        # spd INTEGER NOT NULL CHECK(spd >= 0),
-        # ability VARCHAR(30) NOT NULL,
-        # move1 VARCHAR(30) NOT NULL REFERENCES Move(moveName),
-        # move2 VARCHAR(30) REFERENCES Move(moveName),
-        # move3 VARCHAR(30) REFERENCES Move(moveName),
-        # move4 VARCHAR(30) REFERENCES Move(moveName),
-    ownedpokemon = [[{
-        'species': 29,
-        'speciesName': 'Bulbasaur',
-        'name': 'ligma', # nickname if given, else species name
-        'types': ('Grass', 'Poison'),
-        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
-        'level': 69,
-        'gender': 'male',
-        'isShiny': 'false',
-        'hp': 1,
-        'atk': 1,
-        'def': 1,
-        'spAtk': 1,
-        'spDef': 1,
-        'spd': 1,
-        'ability': 'Overgrow',
-        'move1': 'Vine Whip',
-        'move2': 'Vine Whip',
-        'move3': 'Vine Whip',
-        'move4': 'Vine Whip'
-    },
-    {
-        'species': 29,
-        'speciesName': 'Bulbasaur',
-        'name': 'ligma', # nickname if given, else species name
-        'types': ('Grass', 'Poison'),
-        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
-        'level': 69,
-        'gender': 'male',
-        'isShiny': 'true',
-        'hp': 1,
-        'atk': 1,
-        'def': 1,
-        'spAtk': 1,
-        'spDef': 1,
-        'spd': 1,
-        'ability': 'Overgrow',
-        'move1': 'Vine Whip',
-        'move2': 'Thunderthrower',
-        'move3': 'Vine Whip',
-        'move4': 'Vine Whip'
-    },  {
-        'species': 29,
-        'speciesName': 'Bulbasaur',
-        'name': 'ligma', # nickname if given, else species name
-        'types': ('Grass', 'Poison'),
-        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
-        'level': 69,
-        'gender': 'male',
-        'isShiny': 'true',
-        'hp': 1,
-        'atk': 1,
-        'def': 1,
-        'spAtk': 1,
-        'spDef': 1,
-        'spd': 1,
-        'ability': 'Blaze',
-        'move1': 'Vine Whip',
-        'move2': 'Thunderbolt',
-        'move3': 'Vine Whip',
-        'move4': 'Vine Whip'
-    },  {
-        'species': 29,
-        'speciesName': 'Bulbasaur',
-        'name': 'ligma', # nickname if given, else species name
-        'types': ('Grass', 'Poison'),
-        'colors': (get_color_by_type("Grass"),get_color_by_type("Poison")),
-        'level': 69,
-        'gender': 'male',
-        'isShiny': 'true',
-        'hp': 1,
-        'atk': 1,
-        'def': 1,
-        'spAtk': 1,
-        'spDef': 1,
-        'spd': 1,
-        'ability': 'Overgrow',
-        'move1': 'Vine Whip',
-        'move2': 'Vine Whip',
-        'move3': 'Vine Whip',
-        'move4': 'Thunder'
-    }],]
+    data = request.get_json()
+    info = data['info']
+
+    user_values = []
+    conditions = ""
+
+    if info['nickname']:
+        conditions += " AND nickname ILIKE %s"
+        user_values.append('%' + info['nickname'] + '%')
+    if info['move']:
+        conditions += " AND (move1 ILIKE %s OR move2 ILIKE %s OR move3 ILIKE %s OR move4 ILIKE %s)"
+        user_values.append('%' + info['move'] + '%')
+        user_values.append('%' + info['move'] + '%')
+        user_values.append('%' + info['move'] + '%')
+        user_values.append('%' + info['move'] + '%')
+    if info['ability']:
+        conditions += " AND ability ILIKE %s"
+        user_values.append('%' + info['ability'] + '%')
+    if info['gender']:
+        conditions += " AND gender = %s"
+        user_values.append(info['gender'])
+    if info['shiny']:
+        conditions += " AND isShiny = %s"
+        user_values.append(info['shiny']) 
+
+    user_values.append(data['username'])
+
+    cur.execute('''
+            SELECT ownedId, species, name, nickname, level, gender, isShiny, hp, atk, def, spAtk, spDef, spd, ability, move1, move2, move3, move4, type1, type2 
+            FROM OwnedPokemon, Pokemon
+            WHERE
+            Pokemon.id = OwnedPokemon.species {0}
+            AND
+            owner = %s
+            ORDER BY nickname
+            '''.format(conditions), user_values)
+
+    ownedpokemon = [[
+                {
+                    'ownedId': ownedId,
+                    'species': species,
+                    'speciesName': name,
+                    'name': nickname,
+                    'types': (type1, type2) if type2 else (type1,),
+                    'colors': (get_color_by_type(type1),get_color_by_type(type2)) if type2 else (get_color_by_type(type1),),
+                    'level': level,
+                    'gender': gender,
+                    'isShiny': isShiny,
+                    'hp': hp,
+                    'spd': spd,
+                    'atk': atk,
+                    'def': defence,
+                    'spAtk': spAtk,
+                    'spDef': spDef,
+                    'ability': ability,
+                    'move1': move1,
+                    'move2': move2,
+                    'move3': move3,
+                    'move4': move4
+                }
+                for ownedId, species, name, nickname, level, gender, isShiny, hp, atk, defence, spAtk, spDef, spd, ability, move1, move2, move3, move4, type1, type2 in cur
+        ],]
+
     return jsonify({
         'status': 'success',
         'ownedpokemon': ownedpokemon
     })
+
+@app.route('/getspeciesinfo', methods=['POST'])
+def getspeciesinfo():
+
+    data = request.get_json()
+
+    cur.execute('''
+            SELECT id, baseHp, baseSpd, baseAtk, baseDef, baseSpAtk, baseSpDef, ability1, ability2
+            FROM Pokemon
+            WHERE name=%s
+            ''', [data['species']]
+        )
+
+    info = [
+                {
+                    'id': id,
+                    'hp': hp,
+                    'spd': spd,
+                    'atk': atk,
+                    'def': defence,
+                    'spAtk': spAtk,
+                    'spDef': spDef,
+                    'ability1': ability1,
+                    'ability2': ability2
+                }
+                for id, hp, atk, defence, spAtk, spDef, spd, ability1, ability2 in cur
+        ]
+
+    return jsonify({
+        'status': 'success',
+        'pokemon': info
+    })
+
+@app.route('/createownedpokemon', methods=['POST'])
+def createownedpokemon():
+
+    data = request.get_json()
+    info = data['createInfo']
+
+    error = ''
+    status = 'success'
+
+    shiny = False
+    if (info['shiny'] == 'TRUE'):
+        shiny = True
+
+    try:
+        cur.execute('''
+                INSERT INTO OwnedPokemon 
+                VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                ''', [info['id'], data['username'], info['nickname'], info['level'], info['gender'], 
+                shiny, info['hp'], info['atk'], info['def'], info['spAtk'], info['spDef'], info['spd'], 
+                info['ability'], info['move1'], info['move2'] if info['move2'] else None, 
+                info['move3'] if info['move3'] else None, info['move4'] if info['move3'] else None]
+            )
+    except Exception as err:
+        error = str(err)
+        status = 'failure'
+
+    conn.commit()
+
+    return jsonify({
+        'status': status,
+        'error': error
+    })
+
+@app.route('/changeownedpokemon', methods=['POST'])
+def changeownedpokemon():
+
+    data = request.get_json()
+
+    error = ''
+    status = 'success'
+
+    try:
+        cur.execute('''
+                UPDATE OwnedPokemon 
+                SET nickname = %s, level = %s, hp = %s, spd = %s, atk = %s, def = %s, spAtk = %s,
+                    spDef = %s, move1 = %s, move2 = %s, move3 = %s, move4 = %s
+                WHERE ownedId = %s;
+                ''', [data['nickname'], data['level'], data['hp'], data['spd'], data['atk'], 
+                data['def'], data['spAtk'], data['spDef'], data['move1'], data['move2'] if data['move2'] else None, 
+                data['move3'] if data['move3'] else None, data['move4'] if data['move3'] else None, data['ownedId']]
+            )
+    except Exception as err:
+        error = str(err)
+        status = 'failure'
+
+    conn.commit()
+
+    return jsonify({
+        'status': status,
+        'error': error
+    })
+
+@app.route('/deleteownedpokemon', methods=['POST'])
+def deleteownedpokemon():
+
+    data = request.get_json()
+
+    cur.execute('''DELETE FROM OwnedPokemon WHERE ownedId = %s''', [data['ownedId']])
+
+    conn.commit()
+
+    return jsonify({
+        'status': 'success'
+    })
+
+
 # This route is for feature 2 (recursive query)
 @app.route('/evolutions', methods=['POST'])
 def get_evolutions():

@@ -82,7 +82,7 @@ CREATE TABLE CanLearnMove(
 CREATE TABLE OwnedPokemon(
     ownedID SERIAL PRIMARY KEY,
     species INTEGER NOT NULL REFERENCES Pokemon(id),
-    "owner" VARCHAR(30) NOT NULL REFERENCES "User"(username),
+    "owner" VARCHAR(30) NOT NULL REFERENCES "User"(username) ON DELETE CASCADE,
     nickname VARCHAR(30) NOT NULL DEFAULT 'My Pokemon',
     "level" INTEGER NOT NULL DEFAULT 1 CHECK("level" >= 1 AND "level" <= 100),
     gender VARCHAR(10) NOT NULL DEFAULT 'unknown' 
