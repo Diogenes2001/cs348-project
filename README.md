@@ -8,6 +8,7 @@ pip install -r requirements.txt
 cd hello-world
 npm install
 ```
+If it says any modules are missing, just use pip or npm to install them directly.
 
 ## To set up the database:
 
@@ -31,7 +32,7 @@ Since there is a limit on the file size for submission, the image for each Pokem
 ```
 cd image_scraping
 python image_scraper.py
-python image_scaper_shiny.py
+python image_scraper_shiny.py
 ```
 The image scraper is expected to take some time. Some pictures already have been downloaded manually, as the scraper has trouble scraping them.
 
