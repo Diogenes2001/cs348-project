@@ -47,7 +47,8 @@ In another run `cd hello-world && npm run serve`
 
 We support the following functionalities: 
 - Searching of the Pokemon database based on Pokemon stats and names
-- Searching of the Pokemon database based on charactersitics of the moves they know 
+- Searching of the Pokemon database based on charactersitics of the moves they know
+- Searching of the Pokemon database based on weakness/resistance to attacks of a given type
 
 The backend is in the `app.py` file and the frontend is in `hello-world/src/components/Pokedex.vue` and `hello-world/src/components/Profile.vue`.
 
@@ -58,6 +59,7 @@ We support the following functionalities:
     - Pokemon stats
     - All possible moves the Pokemon can learn
     - Which Pokemon it can evolve into (including links to their pages)
+    - Effectiveness of each type of attack against the Pokemon
 
 The backend is in the `app.py` file and the frontend is in `hello-world/src/components/Pokemon.vue` and `hello-world/src/components/Profile.vue`.
 
